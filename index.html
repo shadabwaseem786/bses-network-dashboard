@@ -252,6 +252,50 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 </head>
 <body>
 
+<!-- ════ PASSWORD GATE ════ -->
+<div id="pwGate" style="display:flex;position:fixed;inset:0;z-index:9999;background:#0a0f1e;align-items:center;justify-content:center;flex-direction:column;gap:1rem;">
+  <div style="text-align:center;margin-bottom:0.5rem;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:1.1rem;font-weight:700;color:#f4f1eb;letter-spacing:0.08em;">⚡ BSES NETWORK DASHBOARD</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#5a6580;margin-top:0.35rem;letter-spacing:0.1em;">RESTRICTED ACCESS · BSES RAJDHANI POWER LIMITED</div>
+  </div>
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:6px;padding:1.5rem 2rem;min-width:280px;max-width:340px;width:90%;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:#94a3b8;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.75rem;">Enter Password</div>
+    <input id="pwInput" type="password" placeholder="••••••••••••••••"
+      style="width:100%;font-family:'IBM Plex Mono',monospace;font-size:0.9rem;padding:0.55rem 0.75rem;background:#0f172a;border:1px solid #3b82f6;border-radius:4px;color:#e2e8f0;outline:none;letter-spacing:0.1em;margin-bottom:0.75rem;">
+    <button id="pwSubmit"
+      style="width:100%;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;padding:0.55rem;background:#2563eb;color:white;border:none;border-radius:4px;cursor:pointer;">
+      UNLOCK →
+    </button>
+    <div id="pwError" style="display:none;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#ef4444;margin-top:0.5rem;text-align:center;">✗ Incorrect password. Try again.</div>
+  </div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:0.58rem;color:#334155;letter-spacing:0.06em;">BSES RAJDHANI POWER LTD · DELHI DISTRIBUTION</div>
+</div>
+
+<script>
+(function(){
+  const PW='whatsthepassword';
+  const SK='bses_auth';
+  if(sessionStorage.getItem(SK)==='1'){
+    document.getElementById('pwGate').style.display='none';
+  }
+  function tryUnlock(){
+    const v=document.getElementById('pwInput').value;
+    if(v===PW){
+      sessionStorage.setItem(SK,'1');
+      document.getElementById('pwGate').style.display='none';
+    }else{
+      document.getElementById('pwError').style.display='block';
+      document.getElementById('pwInput').value='';
+      document.getElementById('pwInput').focus();
+      document.getElementById('pwInput').style.borderColor='#ef4444';
+      setTimeout(()=>{document.getElementById('pwInput').style.borderColor='#3b82f6';},1200);
+    }
+  }
+  document.getElementById('pwSubmit').addEventListener('click',tryUnlock);
+  document.getElementById('pwInput').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+})();
+</script>
+
 <div class="drop-overlay" id="dropOverlay">
   <div class="drop-box"><p style="font-size:1rem;font-weight:600;color:var(--wire-bright);">📂 Drop Excel File</p><small style="font-size:0.75rem;color:var(--ink-light);">.xlsx / .xls accepted</small></div>
 </div>
