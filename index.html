@@ -11782,11 +11782,12 @@ function renderTable(rows){
     const gridHdr=document.createElement('div');
     gridHdr.className='nv-grid-hdr';
     gridHdr.style.background=gridColor;
-    gridHdr.innerHTML=`<span class="nv-toggle-icon open" style="transition:transform 0.15s;display:inline-block;width:12px;">▶</span>
+    gridHdr.innerHTML=`<span class="nv-toggle-icon" style="transition:transform 0.15s;display:inline-block;width:12px;">▶</span>
       <span class="nv-grid-title">⚡ ${grid}</span>
       <span class="nv-grid-stats">${allFls.length} FLs · ${totalCons.toLocaleString()} consumers</span>`;
     gridDiv.appendChild(gridHdr);
     const gridBody=document.createElement('div');
+    gridBody.style.display='none';
     Object.entries(ptrs).forEach(([ptr,feeders])=>{
       const ptrDiv=document.createElement('div');
       ptrDiv.className='nv-ptr';
@@ -11802,13 +11803,14 @@ function renderTable(rows){
         feederDiv.className='nv-feeder';
         const feederHdr=document.createElement('div');
         feederHdr.className='nv-feeder-hdr';
-        feederHdr.innerHTML=`<span class="nv-toggle-icon" style="color:${gridColor};transition:transform 0.15s;display:inline-block;width:12px;transform:rotate(90deg);">▶</span>
+        feederHdr.innerHTML=`<span class="nv-toggle-icon" style="color:${gridColor};transition:transform 0.15s;display:inline-block;width:12px;">▶</span>
           <span class="nv-feeder-name" title="${fdata.feeder}">${shortFeeder(fdata.feeder)}</span>
           <span class="nv-feeder-meta">${fdrBadge}${sldBtn}
             <span style="color:var(--ink-light);font-size:0.58rem;">${fdata.fls.length}FL</span>
           </span>`;
         feederDiv.appendChild(feederHdr);
         const flBody=document.createElement('div');
+        flBody.style.display='none';
         const table=document.createElement('table');
         table.className='nv-fl-table';
         table.innerHTML=`<thead><tr><th>FL Code</th><th>FL Name</th><th>Type</th><th>Cons</th><th>DTs</th><th>kVA</th><th>Curr(A)</th><th>Load</th><th>⚠</th><th>▾</th></tr></thead>`;
