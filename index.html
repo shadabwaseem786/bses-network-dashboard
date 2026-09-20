@@ -94,6 +94,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .alert-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:#991b1b;font-weight:700;display:flex;align-items:center;gap:0.3rem;}
 
 /* LAYOUT */
+.gis-fi{transition:background 0.12s,color 0.12s;}
+.gis-fi:hover{background:var(--paper-darker)!important;}
 .tab-bar{display:flex;gap:0.4rem;margin:0.75rem 0 0.6rem;border-bottom:2px solid var(--paper-darker);}
 .tab-btn{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;font-weight:600;letter-spacing:0.04em;padding:0.45rem 0.9rem;background:transparent;border:none;border-bottom:3px solid transparent;color:var(--ink-light);cursor:pointer;transition:all 0.15s;margin-bottom:-2px;}
 .tab-btn:hover{color:var(--wire-bright);}
@@ -150,61 +152,55 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 /* FILTERS */
 .filter-bar{display:flex;flex-wrap:nowrap;gap:0.4rem;align-items:center;padding:0.45rem 0.75rem;background:var(--paper-dark);border-bottom:1px solid var(--paper-darker);}
 .filter-bar label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--ink-light);letter-spacing:0.08em;white-space:nowrap;}
-.filter-bar select{flex:1;min-width:0;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;padding:0.25rem 0.3rem;border:1px solid var(--paper-darker);background:var(--paper);color:var(--ink);border-radius:2px;cursor:pointer;appearance:none;}
+.filter-bar select,.filter-bar input[type=text]{flex:1;min-width:0;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;padding:0.25rem 0.3rem;border:1px solid var(--paper-darker);background:var(--paper);color:var(--ink);border-radius:2px;cursor:pointer;appearance:none;width:100%;}
+.filter-bar input[type=text]::placeholder{color:var(--ink-light);opacity:0.7;}
+.filter-bar input[type=text]:focus{outline:none;border-color:var(--wire-bright);cursor:text;}
+.ac-wrap{position:relative;flex:1;min-width:0;}
+.ac-list{display:none;position:absolute;top:100%;left:0;right:0;max-height:220px;overflow-y:auto;background:var(--paper);border:1px solid var(--wire-bright);border-top:none;border-radius:0 0 3px 3px;z-index:200;box-shadow:0 4px 10px rgba(0,0,0,0.15);}
+.ac-list.open{display:block;}
+.ac-item{padding:0.35rem 0.5rem;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.05);color:var(--ink);}
+.ac-item:last-child{border-bottom:none;}
+.ac-item:hover,.ac-item.active{background:var(--wire-bright);color:white;}
+.ac-item small{display:block;color:var(--ink-light);font-size:0.58rem;margin-top:1px;}
+.ac-item:hover small,.ac-item.active small{color:rgba(255,255,255,0.8);}
 #recordCount{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--ink-light);white-space:nowrap;}
 
 /* MAIN TABLE */
-.tbl-wrap{overflow-x:scroll;overflow-y:auto;max-height:60vh;-webkit-overflow-scrolling:touch;position:relative;}
-.tbl-wrap::-webkit-scrollbar{height:0;width:0;}
-.tbl-slider-wrap{padding:0.4rem 0.75rem;background:var(--paper-dark);border-top:1px solid var(--paper-darker);display:flex;align-items:center;gap:0.5rem;}
-.tbl-slider-wrap label{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--ink-light);white-space:nowrap;}
-#tblSlider{flex:1;-webkit-appearance:none;height:5px;border-radius:3px;outline:none;cursor:pointer;}
-#tblSlider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--wire);border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.3);cursor:grab;}
-#sliderPct{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--wire-bright);min-width:2rem;text-align:right;}
 
-.main-tbl{border-collapse:collapse;font-size:0.65rem;table-layout:fixed;width:1560px;}
-.main-tbl col.c-grid{width:60px;}
-.main-tbl col.c-ptr{width:55px;}
-.main-tbl col.c-feeder{width:130px;}
-.main-tbl col.c-flcode{width:65px;}
-.main-tbl col.c-flname{width:140px;}
 
-/* FROZEN COLUMNS — applied inline per cell in JS */
-.fcol{position:sticky;z-index:3;}
-.fcol-last{box-shadow:3px 0 8px -2px rgba(26,58,110,0.2);}
-.main-tbl thead th.fcol{z-index:12;}
-.main-tbl col.c-type{width:60px;}
-.main-tbl col.c-cons{width:50px;}
-.main-tbl col.c-ftot{width:65px;}
-.main-tbl col.c-dts{width:55px;}
-.main-tbl col.c-rating{width:65px;}
-.main-tbl col.c-load{width:55px;}
-.main-tbl col.c-curr{width:55px;}
-.main-tbl col.c-alert{width:40px;}
-.main-tbl col.c-dtexp{width:40px;}
+/* ══ FROZEN COLUMNS ══ */
 
-.main-tbl thead th{font-family:'IBM Plex Mono',monospace;font-size:0.57rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-light);padding:3px 2px;background:var(--paper-dark);border-bottom:2px solid var(--wire);border-right:1px solid var(--paper-darker);text-align:center;white-space:normal;line-height:1.1;position:sticky;top:0;z-index:10;}
-.dark .main-tbl thead th{background:var(--paper-darker);}
-.main-tbl tbody td{padding:2px 2px;border-bottom:1px solid rgba(0,0,0,0.05);border-right:1px solid rgba(0,0,0,0.04);text-align:center;vertical-align:middle;word-wrap:break-word;line-height:1.15;}
-.main-tbl tbody tr:hover td{background:rgba(37,99,235,0.04)!important;}
-.row-adchini{background:#fff8f8;}.row-iit{background:#f8fff8;}.row-jnu{background:#f0f7ff;}.row-vasant{background:#fdf8ff;}
-.dark .row-adchini{background:rgba(239,68,68,0.05);}
-.dark .row-iit{background:rgba(34,197,94,0.05);}
-.dark .row-jnu{background:rgba(59,130,246,0.05);}
-.dark .row-vasant{background:rgba(168,85,247,0.05);}
 
-/* OVERLOAD HIGHLIGHT */
+/* HIERARCHICAL NETWORK VIEW */
+.nv-grid{margin-bottom:0.5rem;border:1px solid var(--paper-darker);border-radius:3px;overflow:hidden;}
+.nv-grid-hdr{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.75rem;background:var(--wire);color:white;cursor:pointer;user-select:none;}
+.nv-grid-title{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;flex:1;}
+.nv-grid-stats{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;opacity:0.8;}
+.nv-ptr{border-top:1px solid rgba(255,255,255,0.15);background:rgba(0,0,0,0.18);padding:0.25rem 0.75rem;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:rgba(255,255,255,0.85);letter-spacing:0.06em;}
+.nv-feeder{border-top:1px solid var(--paper-darker);}
+.nv-feeder-hdr{display:flex;align-items:center;gap:0.4rem;padding:0.32rem 0.75rem;background:var(--paper-dark);cursor:pointer;user-select:none;}
+.nv-feeder-name{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:600;color:var(--ink);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nv-feeder-meta{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;color:var(--ink-light);white-space:nowrap;display:flex;gap:0.4rem;align-items:center;}
+.nv-fl-table{width:100%;border-collapse:collapse;font-size:0.62rem;}
+.nv-fl-table th{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-light);padding:3px 6px;background:var(--paper-dark);border-bottom:1px solid var(--paper-darker);text-align:center;white-space:nowrap;}
+.nv-fl-table th:nth-child(2),.nv-fl-table th:nth-child(3){text-align:left;}
+.nv-fl-table td{padding:3px 6px;border-bottom:1px solid rgba(0,0,0,0.04);vertical-align:middle;text-align:center;font-family:'IBM Plex Mono',monospace;}
+.nv-fl-table td:nth-child(2),.nv-fl-table td:nth-child(3){text-align:left;}
+.nv-fl-table tr:last-child td{border-bottom:none;}
+.nv-fl-table tr:hover td{background:rgba(37,99,235,0.05);}
+.nv-fl-table tr.nv-overload td{background:rgba(185,28,28,0.06);}
+.nv-fl-table tr.nv-overload td:first-child{border-left:3px solid var(--fault);}
+.nv-expand-row td{padding:0!important;background:var(--dt-bg)!important;border-left:3px solid var(--wire-bright)!important;}
+.nv-collapsed{display:none;}
+.nv-toggle-icon{font-size:0.65rem;transition:transform 0.15s;display:inline-block;width:12px;text-align:center;}
+.nv-toggle-icon.open{transform:rotate(90deg);}
+
+/* OVERLOAD ROW legacy compat */
 .overload-row td{background:rgba(185,28,28,0.06)!important;}
-.overload-row td:first-child{border-left:3px solid var(--fault);}
 
 /* DT BTN */
-.dt-btn{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;font-weight:700;padding:2px 4px;border-radius:2px;cursor:pointer;background:var(--dt-bg);color:var(--wire-bright);border:1px solid var(--dt-border);transition:all 0.15s;}
-.dt-btn:hover,.dt-btn.expanded{background:var(--wire-bright);color:white;}
 
 /* DT SUBROW */
-.dt-subrow{display:none;}
-.dt-subrow.visible{display:table-row;}
-.dt-subrow td{background:var(--dt-bg)!important;border-left:3px solid var(--wire-bright)!important;padding:0!important;}
 .dt-inner{padding:4px 8px;}
 .dt-tbl{border-collapse:collapse;width:100%;font-size:0.62rem;}
 .dt-tbl th{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--wire);padding:3px 6px;border-bottom:1px solid var(--dt-border);text-align:left;background:rgba(37,99,235,0.06);}
@@ -230,7 +226,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .src-uploaded{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;}
 
 /* ALERT ICON */
-.alert-icon{font-size:0.7rem;cursor:help;}
 
 /* LOAD BAR CHART */
 .bar-chart{padding:0.5rem 0.75rem;}
@@ -249,10 +244,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .dark .critical-card{background:rgba(239,68,68,0.1);}
 .critical-card .cf-name{font-weight:600;font-size:0.72rem;}
 .critical-card .cf-count{font-family:'IBM Plex Mono',monospace;color:var(--fault);font-weight:700;}
-.grid-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;font-weight:600;}
-.ptr-text{font-size:0.68rem;font-family:'IBM Plex Mono',monospace;}
-.feeder-text{font-size:0.66rem;line-height:1.3;}
-.ftot-val{font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--wire);font-size:0.8rem;}
 </style>
 </head>
 <body>
@@ -443,6 +434,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="tab-bar">
     <button class="tab-btn active" id="tabTopology" data-tab="topology">⚡ Network Topology</button>
     <button class="tab-btn" id="tabConsumers" data-tab="consumers">👥 Consumer Search</button>
+    <button class="tab-btn" id="tabGIS" data-tab="gis">🗺 GIS View</button>
   </div>
 
   <!-- ════ TOPOLOGY TAB ════ -->
@@ -477,41 +469,26 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <span><span class="dot" style="background:var(--wire-bright);box-shadow:0 0 6px var(--wire-bright);"></span>Detailed Network Data</span>
         <span id="recordCount">—</span>
       </div>
-      <div class="filter-bar">
-        <label>GRID</label><select id="gridFilter"></select>
-        <label>FEEDER</label><select id="feederFilter"></select>
-        <label>FL</label><select id="flFilter"></select>
+      <div class="filter-bar" style="position:relative;">
+        <label>GRID</label>
+        <div class="ac-wrap">
+          <input type="text" id="gridFilter" placeholder="All Grids" autocomplete="off">
+          <div class="ac-list" id="gridFilterList"></div>
+        </div>
+        <label>FEEDER</label>
+        <div class="ac-wrap">
+          <input type="text" id="feederFilter" placeholder="All Feeders" autocomplete="off">
+          <div class="ac-list" id="feederFilterList"></div>
+        </div>
+        <label>FL</label>
+        <div class="ac-wrap">
+          <input type="text" id="flFilter" placeholder="All FLs" autocomplete="off">
+          <div class="ac-list" id="flFilterList"></div>
+        </div>
         <button class="btn btn-export" id="exportCsvBtn" style="font-size:0.62rem;padding:0.25rem 0.5rem;">↓ CSV</button>
         <button class="btn btn-clear" id="clearFilters" style="font-size:0.62rem;padding:0.25rem 0.5rem;">✕</button>
       </div>
-      <div class="tbl-wrap" id="tblWrap">
-        <table class="main-tbl">
-          <colgroup>
-            <col class="c-grid"><col class="c-ptr"><col class="c-feeder">
-            <col class="c-flcode"><col class="c-flname"><col class="c-type">
-            <col class="c-cons"><col class="c-ftot"><col class="c-dts">
-            <col class="c-rating"><col class="c-load"><col class="c-curr">
-            <col class="c-alert"><col class="c-dtexp">
-          </colgroup>
-          <thead><tr>
-            <th class="fcol" style="left:0;">Grid</th>
-            <th class="fcol" style="left:60px;">PTR</th>
-            <th class="fcol" style="left:115px;">Feeder</th>
-            <th class="fcol" style="left:245px;">FL Code</th>
-            <th class="fcol fcol-last" style="left:310px;">FL Name</th>
-            <th>Type</th>
-            <th>Cons.</th><th>Fdr Tot</th><th>DTs</th>
-            <th>Rating kVA</th><th>Load</th><th>Curr.(A)</th>
-            <th>⚠</th><th>DT▾</th>
-          </tr></thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-      <div class="tbl-slider-wrap">
-        <label>◀ SCROLL ▶</label>
-        <input type="range" id="tblSlider" min="0" max="100" value="0">
-        <span id="sliderPct">0%</span>
-      </div>
+      <div id="networkView" style="max-height:70vh;overflow-y:auto;overflow-x:hidden;"></div>
     </div>
 
     <div class="side-col">
@@ -590,6 +567,48 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
   </div><!-- /view-consumers -->
 
+  <!-- ════ GIS TAB ════ -->
+  <div class="tab-view hidden" id="view-gis">
+    <div style="display:flex;gap:0;height:calc(100vh - 220px);min-height:520px;">
+
+      <!-- SIDEBAR -->
+      <div id="gisSidebarWrap" style="width:210px;flex-shrink:0;display:flex;flex-direction:column;background:var(--paper-dark);border:1px solid var(--paper-darker);border-right:none;border-radius:2px 0 0 2px;overflow:hidden;transition:width 0.2s ease;">
+        <div style="padding:0.45rem 0.6rem;border-bottom:1px solid var(--paper-darker);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+          <span id="gisSidebarLabel" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--wire);">Feeders</span>
+          <div style="display:flex;gap:0.3rem;align-items:center;">
+            <button id="gisResetBtn" onclick="resetGis()" style="display:none;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;padding:1px 6px;background:var(--fault);color:white;border:none;border-radius:2px;cursor:pointer;">✕ Reset</button>
+            <button id="gisSidebarToggle" onclick="toggleGisSidebar()" title="Collapse panel" style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;padding:1px 5px;background:var(--paper-darker);border:1px solid var(--paper-darker);border-radius:2px;cursor:pointer;color:var(--ink);">◀</button>
+          </div>
+        </div>
+        <div id="gisSidebarBody" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+          <div style="padding:0.3rem 0.5rem;border-bottom:1px solid var(--paper-darker);flex-shrink:0;">
+            <input id="gisFeederSearch" type="text" placeholder="Search feeder…" style="width:100%;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;padding:0.25rem 0.4rem;border:1px solid var(--paper-darker);background:var(--paper);color:var(--ink);border-radius:2px;">
+          </div>
+          <div id="gisFeederList" style="flex:1;overflow-y:auto;"></div>
+          <div id="gisInfoBox" style="padding:0.4rem 0.6rem;border-top:1px solid var(--paper-darker);font-family:'IBM Plex Mono',monospace;font-size:0.58rem;color:var(--ink-light);min-height:48px;line-height:1.6;"></div>
+        </div>
+      </div>
+
+      <!-- MAP -->
+      <div style="flex:1;position:relative;border:1px solid var(--paper-darker);border-radius:0 2px 2px 0;overflow:hidden;">
+        <div id="gisMap" style="height:100%;width:100%;"></div>
+        <!-- Legend -->
+        <div style="position:absolute;bottom:24px;right:10px;background:rgba(244,241,235,0.95);border:1px solid var(--paper-darker);border-radius:3px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:0.58rem;z-index:1000;line-height:2;">
+          <div style="font-weight:700;color:var(--wire);margin-bottom:2px;letter-spacing:0.06em;">LEGEND</div>
+          <div><svg width="14" height="14" viewBox="0 0 36 36" style="vertical-align:middle;margin-right:5px;"><rect x="1" y="1" width="34" height="34" rx="4" fill="#1e40af" stroke="white" stroke-width="2"/><rect x="7" y="22" width="22" height="4" rx="1" fill="white"/><rect x="10" y="12" width="3" height="10" fill="white"/><rect x="23" y="12" width="3" height="10" fill="white"/><path d="M18 6 L10 12 L26 12 Z" fill="white"/></svg>PTR Substation</div>
+          <div><svg width="14" height="14" viewBox="0 0 30 30" style="vertical-align:middle;margin-right:5px;"><rect x="1" y="1" width="28" height="28" rx="4" fill="#d97706" stroke="white" stroke-width="2"/><circle cx="11" cy="15" r="6" fill="none" stroke="white" stroke-width="2"/><circle cx="19" cy="15" r="6" fill="none" stroke="white" stroke-width="2"/></svg>FL / Distribution Transformer</div>
+          <div><svg width="14" height="14" viewBox="0 0 30 30" style="vertical-align:middle;margin-right:5px;"><rect x="1" y="1" width="28" height="28" rx="4" fill="#7c3aed" stroke="white" stroke-width="2" stroke-dasharray="4,2"/><circle cx="11" cy="15" r="6" fill="none" stroke="white" stroke-width="2"/><circle cx="19" cy="15" r="6" fill="none" stroke="white" stroke-width="2"/></svg>HTC FL (approx. location)</div>
+          <div><span style="display:inline-block;width:7px;height:7px;background:#16a34a;border-radius:50%;margin-right:5px;vertical-align:middle;"></span>Consumer (toggle)</div>
+          <div><span style="display:inline-block;width:18px;height:2px;background:#2563eb;margin-right:4px;vertical-align:middle;border-top:2px dashed #2563eb;"></span>HT Feeder Route</div>
+        </div>
+        <!-- Top bar info -->
+        <div id="gisTopBar" style="position:absolute;top:8px;left:8px;right:8px;background:rgba(244,241,235,0.92);border:1px solid var(--paper-darker);border-radius:3px;padding:5px 10px;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--ink);z-index:1000;display:none;">
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /view-gis -->
+
 </div>
 
 <script>
@@ -616,63 +635,63 @@ const BUILTIN_TSV=`Grid-Merge	PTR N	Feeder Code	Feeder Name	Feeder Load Amp	FL F
 33kV ADCHINI GRID	PTR-3	ADCH11B11241	11kV FDR I.I.T S/S NO.-3	160.72	1S-DL-RP-STC-DHKS-1651-HKS040	HKS040	HTC:IIT NO.3	1		HTC	1	616
 33kV ADCHINI GRID	PTR-3	ADCH11B11241	11kV FDR I.I.T S/S NO.-3	160.72	1S-DL-RP-STC-DHKS-1651-HKS016	HKS016	IIT NO 1:ID	1	990	Non-HTC	266	
 33kV ADCHINI GRID	PTR-3	ADCH11B11241	11kV FDR I.I.T S/S NO.-3	160.72	1S-DL-RP-STC-DHKS-1651-HKS017	HKS017	IIT NO 2:ID	1	990	Non-HTC	349	
-33 kV I.I.T. GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS004	HKS004	SIIA -1 (GURUNANAK FOUNDATION) :ID	2	1260	Non-HTC	54	58
-33 kV I.I.T. GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS032	HKS032	HTC:NISDOC	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS238	HKS238	HTC:SEETA RAM	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS045	HKS045	HTC:MASS COMMUNICATION	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS063	HKS063	HTC:ICSSR	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS010	HKS010	SIIA NO 4 : ID	1	990	Non-HTC	21	35
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS241	HKS241	HTC:ASSOCIATE OF OLYMPIC	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS061	HKS061	HTC:IMI, KATWARIA SARAI	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS060	HKS060	HTC:IMM, QUTUB IND. AREA	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS245	HKS245	HTC:KALINDI BHAWAN QUTUB IND. AREA	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS070	HKS070	HTC:SOCIETY  DEV ALTERNATIVES,B-32,QIA	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS262	HKS262	HTC:KENDRIYA(RASTRIYA) HINDI SANSTHAN	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS044	HKS044	HTC:LBS VIDHYAPEETH	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS240	HKS240	HTC:ROCKLAND HOSPITAL	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS050	HKS050	HTC:B-12 SOCIAL WELFARE,KATWARIA SARAI	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS053	HKS053	HTC:ISI, KATWARIA SARAI	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS235	HKS235	HTC:AMERICAN EMBASSEY	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS239	HKS239	HTC:CHATRAPATI SHIVAJI	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS054	HKS054	HTC:IIFT	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS019	HKS019	HTC:FORE SCHOOL OF MANAGEMENT	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS237	HKS237	HTC:TIFAC BLDG, QUTUB IND. AREA	1		HTC	1	2998
-33 kV I.I.T. GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS005	HKS005	SIIA NO 5 KATWARIA:ID	2	1980	Non-HTC	0	
-33 kV I.I.T. GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS001	HKS001	DDA FLAT KATWARIA SARAI : ID	2	2590	Non-HTC	1298	
-33 kV I.I.T. GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS056	HKS056	HTC:KENDRIYA VIDYALAYA SANGTHAN	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS244	HKS244	HARIJAN BASTI KATWARIA SARAI VILL : PKG	2	1990	Non-HTC	1696	
-33 kV I.I.T. GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS033	HKS033	HTC:DELHI ARCHIEVES	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS243	HKS243	HTC:18/2, NIEPF QUTUB IND AREA	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS040	HKS040	HTC:BHARTI SCHOOLL, IIT	1		HTC	1	2678
-33 kV I.I.T. GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS048	HKS048	HTC:CSMRS   QUTUB RING ROAD	1		HTC	1	
-33 kV I.I.T. GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS018	HKS018	DDA FLAT BER SARAI : ID	2	1990	Non-HTC	1005	
-33 kV I.I.T. GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS013	HKS013	JIA SARAI:PL	2	1620	Non-HTC	1077	
-33 kV I.I.T. GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS003	HKS003	VILLAGE BER SARAI :I D	2	1390	Non-HTC	594	
-33 kV I.I.T. GRID	PTR-1	IITD11B11991	11kV FDR O/G PROFESSOR FLATS I.I.T S/STN	40.41	1S-DL-RP-STC-DHKS-1651-HKS326	HKS326	O/D RMU AT 33KV IIT GRID			RMU only		210
-33 kV I.I.T. GRID	PTR-1	IITD11B11991	11kV FDR O/G PROFESSOR FLATS I.I.T S/STN	40.41	1S-DL-RP-STC-DHKS-1651-HKS293	HKS293	S/STN. IIT SOLAR HOUSE : ID	1	630	Non-HTC	91	
-33 kV I.I.T. GRID	PTR-1	IITD11B11991	11kV FDR O/G PROFESSOR FLATS I.I.T S/STN	40.41	1S-DL-RP-STC-DHKS-1651-HKS143	HKS143	PROFESSOR'S APPARTMENT,IIT DELHI	4	2520	Non-HTC	117	
+33kV IIT GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS004	HKS004	SIIA -1 (GURUNANAK FOUNDATION) :ID	2	1260	Non-HTC	54	58
+33kV IIT GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS032	HKS032	HTC:NISDOC	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS238	HKS238	HTC:SEETA RAM	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS045	HKS045	HTC:MASS COMMUNICATION	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11021	11kV FDR S.I.I.A NO.-1	143.78	1S-DL-RP-STC-DHKS-1651-HKS063	HKS063	HTC:ICSSR	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS010	HKS010	SIIA NO 4 : ID	1	990	Non-HTC	21	35
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS241	HKS241	HTC:ASSOCIATE OF OLYMPIC	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS061	HKS061	HTC:IMI, KATWARIA SARAI	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS060	HKS060	HTC:IMM, QUTUB IND. AREA	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS245	HKS245	HTC:KALINDI BHAWAN QUTUB IND. AREA	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS070	HKS070	HTC:SOCIETY  DEV ALTERNATIVES,B-32,QIA	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS262	HKS262	HTC:KENDRIYA(RASTRIYA) HINDI SANSTHAN	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS044	HKS044	HTC:LBS VIDHYAPEETH	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS240	HKS240	HTC:ROCKLAND HOSPITAL	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS050	HKS050	HTC:B-12 SOCIAL WELFARE,KATWARIA SARAI	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS053	HKS053	HTC:ISI, KATWARIA SARAI	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS235	HKS235	HTC:AMERICAN EMBASSEY	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS239	HKS239	HTC:CHATRAPATI SHIVAJI	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS054	HKS054	HTC:IIFT	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11031	11kV FDR S.I.I.A NO.-4	83.70	1S-DL-RP-STC-DHKS-1651-HKS019	HKS019	HTC:FORE SCHOOL OF MANAGEMENT	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS237	HKS237	HTC:TIFAC BLDG, QUTUB IND. AREA	1		HTC	1	2998
+33kV IIT GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS005	HKS005	SIIA NO 5 KATWARIA:ID	2	1980	Non-HTC	0	
+33kV IIT GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS001	HKS001	DDA FLAT KATWARIA SARAI : ID	2	2590	Non-HTC	1298	
+33kV IIT GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS056	HKS056	HTC:KENDRIYA VIDYALAYA SANGTHAN	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS244	HKS244	HARIJAN BASTI KATWARIA SARAI VILL : PKG	2	1990	Non-HTC	1696	
+33kV IIT GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS033	HKS033	HTC:DELHI ARCHIEVES	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11051	11kV FDR O/G TIFAC BUILDING	271.31	1S-DL-RP-STC-DHKS-1651-HKS243	HKS243	HTC:18/2, NIEPF QUTUB IND AREA	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS040	HKS040	HTC:BHARTI SCHOOLL, IIT	1		HTC	1	2678
+33kV IIT GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS048	HKS048	HTC:CSMRS   QUTUB RING ROAD	1		HTC	1	
+33kV IIT GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS018	HKS018	DDA FLAT BER SARAI : ID	2	1990	Non-HTC	1005	
+33kV IIT GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS013	HKS013	JIA SARAI:PL	2	1620	Non-HTC	1077	
+33kV IIT GRID	PTR-1	IITD11B11041	11kV FDR BHARTI SCHOOL FDR.%u22121+11KV FDR CSMRS (DOUBLE CABLE)	118.05	1S-DL-RP-STC-DHKS-1651-HKS003	HKS003	VILLAGE BER SARAI :I D	2	1390	Non-HTC	594	
+33kV IIT GRID	PTR-1	IITD11B11991	11kV FDR O/G PROFESSOR FLATS I.I.T S/STN	40.41	1S-DL-RP-STC-DHKS-1651-HKS326	HKS326	O/D RMU AT 33KV IIT GRID			RMU only		210
+33kV IIT GRID	PTR-1	IITD11B11991	11kV FDR O/G PROFESSOR FLATS I.I.T S/STN	40.41	1S-DL-RP-STC-DHKS-1651-HKS293	HKS293	S/STN. IIT SOLAR HOUSE : ID	1	630	Non-HTC	91	
+33kV IIT GRID	PTR-1	IITD11B11991	11kV FDR O/G PROFESSOR FLATS I.I.T S/STN	40.41	1S-DL-RP-STC-DHKS-1651-HKS143	HKS143	PROFESSOR'S APPARTMENT,IIT DELHI	4	2520	Non-HTC	117	
 33kV IIT GRID	PTR-1	IITD11B11991	11kV FDR O/G PROFESSOR FLATS I.I.T S/STN	40.41	1S-DL-RP-STC-DHKS-1651-HKS321	HKS321	11kV FDR IIT BLOCK 99 NO 1			HTC		
 33kV IIT GRID	PTR-1	IITD11B11991	11kV FDR O/G PROFESSOR FLATS I.I.T S/STN	40.41	1S-DL-RP-STC-DHKS-1651-HKS321	HKS321	11kV FDR IIT BLOCK NO 2			HTC	1	
-33 kV I.I.T. GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS005	HKS005	SIIA NO 5 KATWARIA:ID	2	1980	Non-HTC	1178	1513
-33 kV I.I.T. GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS038	HKS038	HTC:CHACHA NEHRU NCERT	1		HTC	1	
-33 kV I.I.T. GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS247	HKS247	HTC:NIPPA NCERT	1		HTC	1	
-33 kV I.I.T. GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS037	HKS037	HTC:NCERT NO.1	1		HTC	1	
-33 kV I.I.T. GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS002	HKS002	NCERT NO 2:ID	2	1390	Non-HTC	332	
-33 kV I.I.T. GRID	PTR-2	IITD11B11111	11kV FDR O/G I.I.T MINI CAMPUS+11KV FDR BHARTI SCHOOL FDR. -2	153.12	1S-DL-RP-STC-DHKS-1651-HKS242	HKS242	HTC:IIT NO.3	1		HTC	1	94
-33 kV I.I.T. GRID	PTR-2	IITD11B11111	11kV FDR O/G I.I.T MINI CAMPUS+11KV FDR BHARTI SCHOOL FDR. -2	153.12	1S-DL-RP-STC-DHKS-1651-HKS008	HKS008	IIT MINI CAMPUS:ID	2	1030	Non-HTC	89	
-33 kV I.I.T. GRID	PTR-2	IITD11B11111	11kV FDR O/G I.I.T MINI CAMPUS+11KV FDR BHARTI SCHOOL FDR. -2	153.12	1S-DL-RP-STC-DHKS-1651-HKS009	HKS009	INSTITUTE OF RUSSIAN STUDY :ID	1	630	Non-HTC	3	
-33 kV I.I.T. GRID	PTR-2	IITD11B11111	11kV FDR O/G I.I.T MINI CAMPUS+11KV FDR BHARTI SCHOOL FDR. -2	153.12	1S-DL-RP-STC-DHKS-1651-HKS039	HKS039	HTC:INST. OF RUSSIAN STUDIES NO-2 OLD	1		HTC	1	
-33 kV I.I.T. GRID	PTR-2	IITD11B11141	11kV FDR O/G I.I.T CAMPUS S/S NO.-III	171.70	1S-DL-RP-STC-DHKS-1651-HKS040	HKS040	HTC:IIT NO.3	1		HTC	1	1
+33kV IIT GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS005	HKS005	SIIA NO 5 KATWARIA:ID	2	1980	Non-HTC	1178	1513
+33kV IIT GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS038	HKS038	HTC:CHACHA NEHRU NCERT	1		HTC	1	
+33kV IIT GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS247	HKS247	HTC:NIPPA NCERT	1		HTC	1	
+33kV IIT GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS037	HKS037	HTC:NCERT NO.1	1		HTC	1	
+33kV IIT GRID	PTR-2	IITD11B11101	11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI	172.33	1S-DL-RP-STC-DHKS-1651-HKS002	HKS002	NCERT NO 2:ID	2	1390	Non-HTC	332	
+33kV IIT GRID	PTR-2	IITD11B11111	11kV FDR O/G I.I.T MINI CAMPUS+11KV FDR BHARTI SCHOOL FDR. -2	153.12	1S-DL-RP-STC-DHKS-1651-HKS242	HKS242	HTC:IIT NO.3	1		HTC	1	94
+33kV IIT GRID	PTR-2	IITD11B11111	11kV FDR O/G I.I.T MINI CAMPUS+11KV FDR BHARTI SCHOOL FDR. -2	153.12	1S-DL-RP-STC-DHKS-1651-HKS008	HKS008	IIT MINI CAMPUS:ID	2	1030	Non-HTC	89	
+33kV IIT GRID	PTR-2	IITD11B11111	11kV FDR O/G I.I.T MINI CAMPUS+11KV FDR BHARTI SCHOOL FDR. -2	153.12	1S-DL-RP-STC-DHKS-1651-HKS009	HKS009	INSTITUTE OF RUSSIAN STUDY :ID	1	630	Non-HTC	3	
+33kV IIT GRID	PTR-2	IITD11B11111	11kV FDR O/G I.I.T MINI CAMPUS+11KV FDR BHARTI SCHOOL FDR. -2	153.12	1S-DL-RP-STC-DHKS-1651-HKS039	HKS039	HTC:INST. OF RUSSIAN STUDIES NO-2 OLD	1		HTC	1	
+33kV IIT GRID	PTR-2	IITD11B11141	11kV FDR O/G I.I.T CAMPUS S/S NO.-III	171.70	1S-DL-RP-STC-DHKS-1651-HKS040	HKS040	HTC:IIT NO.3	1		HTC	1	1
 66kV JNU GRID	PTR-1	JNUV11B11141	11kV FDR N. INST.IMMUNOLOGY	92.73	1S-DL-RP-STC-DHKS-1651-HKS046	HKS046	HTC:DEPTT. OF IMMUNOLOGY	1		HTC	1	1
 66kV JNU GRID	PTR-1	JNUV11B11151	11kV FDR 11KV O/G J.N.U NO.-II (NEW S/SSTN.)	128.62	1S-DL-RP-STC-DHKS-1651-HKS034	HKS034	HTC:JNU NEW CAMPUS	1		HTC	1	1
 66kV JNU GRID	PTR-2	JNUV11B11061	11kV FDR 11KV O/G J.N.U NEW CAMPUS -1	168.36	1S-DL-RP-STC-DHKS-1651-HKS034	HKS034	HTC:JNU NEW CAMPUS	1		HTC	1	1
-66 kV VASANT KUNJ B - BLK GRID	PTR-1	VASB11B11121	11kV FDR BIO TECH FEEDER-2	204.78	1S-DL-RP-STC-DHKS-1651-HKS313	HKS313	DP AT ARUNA ASAF ALI MARG NEAR NIPGR			RMU only	0	2
-66 kV VASANT KUNJ B - BLK GRID	PTR-1	VASB11B11121	11kV FDR BIO TECH FEEDER-2	204.78	1S-DL-RP-STC-DHKS-1651-HKS292	HKS292	RMU:ARUNA ASIF ALI MARG NEAR NEELA HAUZ			RMU only	0	
-66 kV VASANT KUNJ B - BLK GRID	PTR-1	VASB11B11121	11kV FDR BIO TECH FEEDER-2	204.78	1S-DL-RP-STC-DHKS-1651-HKS288	HKS288	HTC:N.T FOR HANDICAPPED,9,JEET SINGH MAR	1		HTC	1	
-66 kV VASANT KUNJ B - BLK GRID	PTR-1	VASB11B11121	11kV FDR BIO TECH FEEDER-2	204.78	1S-DL-RP-STC-DHKS-1651-HKS058	HKS058	HTC:NREB, KATWARIA SARAI	1		HTC	1	
-66 kV VASANT KUNJ B - BLK GRID	PTR-2	VASB11B11061	11kV FDR NUCLER SCIENCE CENTER	93.39	1S-DL-RP-STC-DHKS-1651-HKS047	HKS047	HTC:NUCLEAR SCIENCE CENTRE	1		HTC	1	2
-66 kV VASANT KUNJ B - BLK GRID	PTR-2	VASB11B11061	11kV FDR NUCLER SCIENCE CENTER	93.39	1S-DL-RP-STC-DHKS-1651-HKS246	HKS246	HTC:NIPGR QUTUB IND AREA	1		HTC	1	
-66 kV VASANT KUNJ B - BLK GRID	PTR-2	VASB11B11071	11kV FDR BIO-TECH FEEDER-1	76.34	1S-DL-RP-STC-DHKS-1651-HKS064	HKS064	HTC:BIO-TECHNOLOGY	1		HTC	1	1`;
+66kV VASANT KUNJ B GRID	PTR-1	VASB11B11121	11kV FDR BIO TECH FEEDER-2	204.78	1S-DL-RP-STC-DHKS-1651-HKS313	HKS313	DP AT ARUNA ASAF ALI MARG NEAR NIPGR			RMU only	0	2
+66kV VASANT KUNJ B GRID	PTR-1	VASB11B11121	11kV FDR BIO TECH FEEDER-2	204.78	1S-DL-RP-STC-DHKS-1651-HKS292	HKS292	RMU:ARUNA ASIF ALI MARG NEAR NEELA HAUZ			RMU only	0	
+66kV VASANT KUNJ B GRID	PTR-1	VASB11B11121	11kV FDR BIO TECH FEEDER-2	204.78	1S-DL-RP-STC-DHKS-1651-HKS288	HKS288	HTC:N.T FOR HANDICAPPED,9,JEET SINGH MAR	1		HTC	1	
+66kV VASANT KUNJ B GRID	PTR-1	VASB11B11121	11kV FDR BIO TECH FEEDER-2	204.78	1S-DL-RP-STC-DHKS-1651-HKS058	HKS058	HTC:NREB, KATWARIA SARAI	1		HTC	1	
+66kV VASANT KUNJ B GRID	PTR-2	VASB11B11061	11kV FDR NUCLER SCIENCE CENTER	93.39	1S-DL-RP-STC-DHKS-1651-HKS047	HKS047	HTC:NUCLEAR SCIENCE CENTRE	1		HTC	1	2
+66kV VASANT KUNJ B GRID	PTR-2	VASB11B11061	11kV FDR NUCLER SCIENCE CENTER	93.39	1S-DL-RP-STC-DHKS-1651-HKS246	HKS246	HTC:NIPGR QUTUB IND AREA	1		HTC	1	
+66kV VASANT KUNJ B GRID	PTR-2	VASB11B11071	11kV FDR BIO-TECH FEEDER-1	76.34	1S-DL-RP-STC-DHKS-1651-HKS064	HKS064	HTC:BIO-TECHNOLOGY	1		HTC	1	1`;
 
 /* ══ DT DATA ══ */
 const BUILTIN_DT_RAW=[
@@ -11006,6 +11025,119 @@ function openSLD(feederCode,feederName){
   modal.addEventListener('click',function(e){if(e.target===modal)modal.remove();});
 }
 
+/* ══ ASSET REGISTER DATA ══ */
+const ASSET_TSV=`E11MTC	1S-DL-RP-STC-DHKS-1651-HKS262	DL-11MTCAK01501140	PNL,MET CUBICAL 15/5;11KV	M/S ADHUNIK YANTRA UDYOG (P)
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS243	DL-11MTCAK01501647	TRAFO,CURR,MET 3P4W;15/5A;11/0.11KV	ADHUNIK YANTRA UDYOG PLTD.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS070	DL-11MTCAK03501716	PNL,MET CUBICAL 30/5AMP;11KV	M/S ADHUNIK YANTRA UDYOG P.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS245	DL-11MTCAK03501725	PNL,MET CUBICAL 30/5AMP;11KV	M/S ADHUNIK YANTRA UDYOG P.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS045	DL-11MTCAK03502010	PNL,MET CUBICAL 30/5AMP;11KV	ADHUNIK YANTRA UDYOG P.LTD.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS061	DL-11MTCAK06501062	PNL,MET CUBICAL 60/5;11KV	M/S ADHUNIK YANTRA UDYOG P.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS057	DL-11MTCAK06501614	PNL,MET CUBICAL 60/5;11KV	ADHUNIK YANTRA UDYOG P.LTD.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS043	DL-11MTCAK10501151	PNL,MET CUBICAL 100/5;11KV	M/S ADHUNIK YANTRA UDYOG (P)
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS037	DL-11MTCAK10501423	PNL,MET CUBICAL 100/5;11KV	M/S ADHUNIK YANTRA UDYOG P.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS046	DL-11MTCAK15501172	PNL,MET CUBICAL 150/5A;11KV	M/S ADHUNIK YANTRA UDYOG P.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS047	DL-11MTCAK15501429	PNL,MET CUBICAL 150/5A;11KV	M/S ADHUNIK YANTRA UDYOG P.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS034	DL-11MTCAK30501445	PNL,MET CUBICAL 300/5A;11KV	M/S ADHUNIK YANTRA UDYOG P.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS242	DL-11MTCAK30501446	PNL,MET CUBICAL 300/5A;11KV	M/S ADHUNIK YANTRA UDYOG P.
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS285	DL-11MTCKP01501350	PNL,MET CUBICAL 15/5;11KV	M/S KAPCO TRANSFORMERTION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS038	DL-11MTCKP03501263	PNL,MET CUBICAL 30/5AMP;11KV	M/S KAPCO TRANSFORMER
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS247	DL-11MTCKP03501379	PNL,MET CUBICAL 30/5AMP;11KV	M/S KAPCO TRANSFORMER
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS019	DL-11MTCKP06501134	PNL,MET CUBICAL 60/5;11KV	M/S KAPCO TRANSFORMERTION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS288	DL-11MTCKP06501301	PNL,MET CUBICAL 60/5;11KV	M/S KAPCO ELECTRIC PRIVATE LTE
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS053	DL-11MTCPF01500604	METERING CUBICLE,11KV 15/5A,W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS237	DL-11MTCPF01500843	METERING CUBICLE,11KV 60/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS241	DL-11MTCPF03500438	METERING CUBICLE,11KV 30/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS033	DL-11MTCPF03500474	METERING CUBICLE,11KV 30/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS235	DL-11MTCPF03500529	METERING CUBICLE,11KV 30/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS248	DL-11MTCPF03500806	METERING CUBICLE,11KV 30/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS215	DL-11MTCPF10501109	PNL,MET CUBICAL 100/5;11KV	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS032	DL-11MTCPF15500063	METERING CUBICLE,150/5A,W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS056	DL-11MTCPS01500717	METERING CUBICLE,11KV 15/5A,W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS267	DL-11MTCPS01501005	METERING CUBICLE,11KV 30/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS238	DL-11MTCPS03500743	METERING CUBICLE,11KV 30/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS050	DL-11MTCPS03500744	METERING CUBICLE,11KV 30/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS044	DL-11MTCPS03500749	METERING CUBICLE,11KV 30/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS039	DL-11MTCPS03500750	METERING CUBICLE,11KV 30/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS038	DL-11MTCPS03501200	PNL,MET CUBICAL 30/5AMP;11KV	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS060	DL-11MTCPS03501582	PNL,MET CUBICAL 30/5AMP;11KV	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS239	DL-11MTCPS06500741	METERING CUBICLE,11KV 60/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS063	DL-11MTCPS06500756	METERING CUBICLE,11KV 60/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS048	DL-11MTCPS06500828	METERING CUBICLE,11KV 60/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS058	DL-11MTCPS06501027	METERING CUBICLE,11KV 60/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS058	DL-11MTCPS06501038	METERING CUBICLE,11KV 60/5A I/D W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS046	DL-11MTCPS15500754	METERING CUBICLE,150/5A,W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS064	DL-11MTCPS15500757	METERING CUBICLE,150/5A,W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS246	DL-11MTCPS15500759	METERING CUBICLE,150/5A,W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS034	DL-11MTCPS15500960	METERING CUBICLE,150/5A,W/CT&PT	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS047	DL-11MTCPS15501670	PNL,MET CUBICAL 150/5A;11KV	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS064	DL-11MTCPS30500758	METERING CUBICLE,11 KV 300/5A	PERFECT SALES CORPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS321	DL-11MTCPS30501309	PNL,MET CUBICAL 300/5A;11KV	PERFECT SALES COPORATION
+E11MTC	1S-DL-RP-STC-DHKS-1651-HKS321	DL-11MTCPS30501310	PNL,MET CUBICAL 300/5A;11KV	PERFECT SALES COPORATION
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS001	DL-11SWGABSF654584	RMU,11KV 4W(2C+2I) MAN I/D EXT	ABB
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS001	DL-1LDTRKT99053010	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	KOTSONS
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS001	DL-1LDTRMS16057806	TRAFO,DISTR,1600KVA;11KV;0.433KV	MEI POWER PRIVATE LIMITED
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS002	DL-11SWGCSSF689085	RNG MAIN UNT,INDR EXTENSIBLE,4WAY,11KV	C&S ELECTRIC  LIMITED
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS002	DL-1LDTRKA99054817	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	KANOHAR
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS002	DL-1LDTRXX40054979	TRANSFORMER,11/0.433KV 400KVA OIL TYPE	
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS003	DL-11SWGMRSF654452	RMU,11KV 3W(1C+2I) MAN O/D EXT	MERLIN GERIN
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS003	DL-11SWGMRSF654453	RMU,11KV MAN 1W(1C) I/D EXT	MERLIN GERIN
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS003	DL-1LDTRKA40002780	TRANSFORMER,11/0.433KV 400KVA OIL TYPE	KANOHAR
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS003	DL-1LDTRKT99054740	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	KOTSONS
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS004	DL-11SWGABSF654440	RMU,11KV 4W(2C+2I) MAN I/D EXT	ABB
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS004	DL-11SWGABSF654441	RMU,11KV 4W(2C+2I) MAN I/D EXT	ABB
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS004	DL-1LDTREC63052917	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	ECE
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS004	DL-1LDTRNF63002785	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	NGEF
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS005	DL-11SWGABSF654432	RMU,11KV 4W(2C+2I) MAN I/D EXT	ABB
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS005	DL-11SWGABSF654433	RMU,11KV 4W(2C+2I) MAN I/D EXT	ABB
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS005	DL-11SWGABSF654434	RMU,11KV 4W(2C+2I) MAN I/D EXT	ABB
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS005	DL-11SWGABSF654588	RMU,11KV MAN 1W(1C) I/D EXT	ABB
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS005	DL-1LDTRKA99002787	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	KANOHAR
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS005	DL-1LDTRKE99009027	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	KIRLOSKAR
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS006	DL-1LDTRKE63000093	TRANSFORMER,11/0.433KV 630KVA DRY TYPE	KIRLOSKAR
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS007	DL-11SWGABSF654587	RMU,11KV 4W(2C+2I) MAN I/D EXT	ABB
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS007	DL-1LDTRKE63013490	TRNSF DRYDT 11KV/433V 630KVA	KIRLOSKAR
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS008	DL-11SWGCSSF666331	RMU,11KV MAN 1W(1C) I/D EXT	C&S
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS008	DL-11SWGCSSF683232	RNG MAIN UNT,INDR,4WAYS,11KV	C&S ELECTRIC  LIMITED
+E11RMU	1S-DL-RP-STC-DHKS-1651-HKS008	DL-11SWGSDSF655780	RMU,11KV 3W(1C+2I) MAN I/D EXT	SCHNIEDER
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS008	DL-1LDTRKA40003729	TRANSFORMER,11/0.433KV 400KVA OIL TYPE	KANOHAR
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS008	DL-1LDTRWN63053975	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	WESTERN TRANSFORMERS
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS009	DL-1LDTRMS63053012	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	MARSONS
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS010	DL-1LDTRKA99053013	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	KANOHAR
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS011	DL-1LDTRNF63019711	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	NGEF
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS012	DL-1LDTREC99053015	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	ECE
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS012	DL-1LDTRSI99054270	TRAFO,DISTR,OIL;990KVA;11KV;0.433KV	M/S SHILCHAR TECHNOLOGIES
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS013	DL-1LDTRJL63053370	TRNSF OILDT 11KV/433V 630KVA	JAY BEE ELECTRICAL
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS013	DL-1LDTRNF99053017	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	NGEF
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS016	DL-1LDTRVA99054282	TRAFO,DISTR,OIL;990KVA;11KV;0.433KV	M/S VOLTAMP TRANSFORMER LTD.
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS017	DL-1LDTRVJ99053021	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	VIJAY ELECTRIC
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS018	DL-1LDTRDL99055495	TRAFO,DISTR,1000KVA;11KV;0.433KV;RED DIM	Danish
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS018	DL-1LDTRKA99011793	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	KANOHAR
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS020	DL-1LDTRTL10053022	TRANSFORMER,11/0.433KV 100KVA OIL TYPE	TESLA
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS021	DL-1LDTRPM40055389	TRANSFORMER,11/0.433KV 400KVA OIL TYPE	PME
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS143	DL-1LDTREC63004550	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	ECE
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS143	DL-1LDTRKA63005163	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	KANOHAR
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS143	DL-1LDTRKA63017914	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	KANOHAR
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS143	DL-1LDTRMZ63011053	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	MIRZAPUR ELECTRICAL
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS223	DL-1LDTRVJ99011940	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	VIJAY
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS223	DL-1LDTRXX63050844	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	
+EDCPU	1S-DL-RP-STC-DHKS-1651-HKS223	DL-1LPKGCG00000060	PACKAGE SUBSTATION,11/433KV1000KVA W/o T	CROMPTON GREAVES
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS244	DL-1LDTRPM99011089	TRANSFORMER,11/0.433KV 990KVA OIL TYPE	PM ELECTRICALS
+EDCPU	1S-DL-RP-STC-DHKS-1651-HKS244	DL-1LPKGKT00000070	PACKAGE SUBSTATION,11/433KV1000KVA W/o T	KOTSON
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS293	DL-1LDTRMS63055712	TRAFO,DISTR,OIL;630KVA;11KV;0.433KV	MARSON'S ELECTRICAL INDUSTRIES
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS309	DL-1LDTRXX63050747	TRANSFORMER,11/0.433KV 630KVA OIL TYPE	
+EDTRN	1S-DL-RP-STC-DHKS-1651-HKS319	DL-1LDTRAW25057122	TRAFO,DISTR,DISTR;250KVA;11KV;0.433KV	ABC TRANSFORMERS PVT LTD
+ECAPA	1S-DL-RP-STC-DHKS-1651-HKS005	DL-LTCAPRM20050742	PANEL,APFC,200KVAR,440V,3PH,50HZ	RMS AUTOMATION
+ECAPA	1S-DL-RP-STC-DHKS-1651-HKS005	DL-LTCAPRM30050743	ELINS PANEL APFC 300KVAR 35KA	RMS AUTOMATION
+ECAPA	1S-DL-RP-STC-DHKS-1651-HKS016	DL-LTCAPSS20050746	ELINS PANEL APFC 200KVAR 35KA	SAHA SPRAGUE
+ECAPA	1S-DL-RP-STC-DHKS-1651-HKS010	DL-LTCAPSS30050744	ELINS PANEL APFC 300KVAR 35KA	SAHA SPRAGUE
+ECAPA	1S-DL-RP-STC-DHKS-1651-HKS012	DL-LTCAPSS30050745	ELINS PANEL APFC 300KVAR 35KA	SAHA SPRAGUE`;
+
+/* ══ DT PEAK LOADING (Apr-Jun 26) ══ */
+const DT_LOADING={"1S-DL-RP-STC-DHKS-1651-HKS049":[{"dt":"2551AGJ-HKS049A-1","kva":630,"pkva":69.8,"pct":11.1,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS049A-2","kva":630,"pkva":108.4,"pct":17.2,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS052":[{"dt":"2551AGJ-HKS052A-1","kva":400,"pkva":69.1,"pct":17.3,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS052A-2","kva":400,"pkva":65.9,"pct":16.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS082":[{"dt":"2551AGJ-HKS082A-1","kva":400,"pkva":141.9,"pct":35.5,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS082A-2","kva":400,"pkva":35.9,"pct":9.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS098":[{"dt":"2551AGJ-HKS098A-1","kva":400,"pkva":267.2,"pct":66.8,"range":"60-80","month":"May-26"},{"dt":"2551AGJ-HKS098A-2","kva":400,"pkva":85.1,"pct":21.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS099":[{"dt":"2551AGJ-HKS099A-1","kva":990,"pkva":628.1,"pct":63.4,"range":"60-80","month":"May-26"},{"dt":"2551AGJ-HKS099A-2","kva":990,"pkva":645.0,"pct":65.2,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS100":[{"dt":"2551AGJ-HKS100A-1","kva":990,"pkva":291.6,"pct":29.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS101":[{"dt":"2551AGJ-HKS101A-1","kva":990,"pkva":237.4,"pct":24.0,"range":"<60","month":"Jun-26"},{"dt":"2551AGJ-HKS101A-2","kva":990,"pkva":475.1,"pct":48.0,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS102":[{"dt":"2551AGJ-HKS102A-1","kva":990,"pkva":628.1,"pct":63.4,"range":"60-80","month":"May-26"},{"dt":"2551AGJ-HKS102A-2","kva":630,"pkva":284.0,"pct":45.1,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS104":[{"dt":"2551AGJ-HKS104A-1","kva":630,"pkva":325.9,"pct":51.7,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS104A-2","kva":400,"pkva":312.4,"pct":78.1,"range":"60-80","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS105":[{"dt":"2551AGJ-HKS105A-1","kva":400,"pkva":28.1,"pct":7.0,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS105A-2","kva":400,"pkva":39.6,"pct":9.9,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS106":[{"dt":"2551AGJ-HKS106A-1","kva":400,"pkva":112.8,"pct":28.2,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS106A-2","kva":990,"pkva":125.5,"pct":12.7,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS107":[{"dt":"2551AGJ-HKS107A-1","kva":990,"pkva":472.2,"pct":47.7,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS107A-2","kva":990,"pkva":448.2,"pct":45.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS108":[{"dt":"2551AGJ-HKS108A-1","kva":990,"pkva":616.2,"pct":62.2,"range":"60-80","month":"May-26"},{"dt":"2551AGJ-HKS108A-2","kva":630,"pkva":467.9,"pct":74.3,"range":"60-80","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS109":[{"dt":"2551AGJ-HKS109A-1","kva":990,"pkva":660.2,"pct":66.7,"range":"60-80","month":"Jun-26"},{"dt":"2551AGJ-HKS109A-2","kva":990,"pkva":459.6,"pct":46.4,"range":"<60","month":"Jun-26"},{"dt":"2551AGJ-HKS109A-3","kva":630,"pkva":338.4,"pct":53.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS110":[{"dt":"2551AGJ-HKS110A-1","kva":400,"pkva":42.6,"pct":10.7,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS110A-2","kva":400,"pkva":101.3,"pct":25.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS111":[{"dt":"2551AGJ-HKS111A-1","kva":400,"pkva":93.0,"pct":23.2,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS111A-2","kva":400,"pkva":131.8,"pct":32.9,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS112":[{"dt":"2551AGJ-HKS112A-1","kva":400,"pkva":179.7,"pct":44.9,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS113":[{"dt":"2551AGJ-HKS113A-1","kva":990,"pkva":748.5,"pct":75.6,"range":"60-80","month":"May-26"},{"dt":"2551AGJ-HKS113A-2","kva":990,"pkva":600.8,"pct":60.7,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS114":[{"dt":"2551AGJ-HKS114A-1","kva":990,"pkva":730.4,"pct":73.8,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS115":[{"dt":"2551AGJ-HKS115A-1","kva":990,"pkva":583.8,"pct":59.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS116":[{"dt":"2551AGJ-HKS116A-1","kva":990,"pkva":675.8,"pct":68.3,"range":"60-80","month":"May-26"},{"dt":"2551AGJ-HKS116A-2","kva":990,"pkva":690.1,"pct":69.7,"range":"60-80","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS117":[{"dt":"2551AGJ-HKS117A-1","kva":990,"pkva":527.6,"pct":53.3,"range":"<60","month":"Jun-26"},{"dt":"2551AGJ-HKS117A-2","kva":990,"pkva":592.6,"pct":59.9,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS119":[{"dt":"2551AGJ-HKS119A-1","kva":1600,"pkva":1294.5,"pct":80.9,"range":"80-100","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS120":[{"dt":"2551AGJ-HKS120A-1","kva":990,"pkva":539.5,"pct":54.5,"range":"<60","month":"Jun-26"},{"dt":"2551AGJ-HKS120A-2","kva":990,"pkva":508.9,"pct":51.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS121":[{"dt":"2551AGJ-HKS121A-1","kva":990,"pkva":635.7,"pct":64.2,"range":"60-80","month":"May-26"},{"dt":"2551AGJ-HKS121A-2","kva":990,"pkva":346.8,"pct":35.0,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS121B-2","kva":990,"pkva":128.8,"pct":13.0,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS122":[{"dt":"2551AGJ-HKS122A-1","kva":630,"pkva":160.3,"pct":25.4,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS122A-2","kva":630,"pkva":205.5,"pct":32.6,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS123":[{"dt":"2551AGJ-HKS123A-1","kva":990,"pkva":445.6,"pct":45.0,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS123A-2","kva":990,"pkva":575.9,"pct":58.2,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS124":[{"dt":"2551AGJ-HKS124A-1","kva":990,"pkva":460.5,"pct":46.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS125":[{"dt":"2551AGJ-HKS125A-1","kva":990,"pkva":651.9,"pct":65.8,"range":"60-80","month":"May-26"},{"dt":"2551AGJ-HKS125A-2","kva":630,"pkva":346.5,"pct":55.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS126":[{"dt":"2551AGJ-HKS126A-1","kva":630,"pkva":337.5,"pct":53.6,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS127":[{"dt":"2551AGJ-HKS127A-1","kva":990,"pkva":447.9,"pct":45.2,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS128":[{"dt":"2551AGJ-HKS128A-1","kva":1600,"pkva":888.1,"pct":55.5,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS128A-2","kva":1600,"pkva":997.3,"pct":62.3,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS129":[{"dt":"2551AGJ-HKS129A-1","kva":990,"pkva":832.9,"pct":84.1,"range":"80-100","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS130":[{"dt":"2551AGJ-HKS130A-1","kva":630,"pkva":337.1,"pct":53.5,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS130A-2","kva":990,"pkva":440.1,"pct":44.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS131":[{"dt":"2551AGJ-HKS131A-1","kva":990,"pkva":595.6,"pct":60.2,"range":"60-80","month":"May-26"},{"dt":"2551AGJ-HKS131A-2","kva":1600,"pkva":577.6,"pct":36.1,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS132":[{"dt":"2551AGJ-HKS132A-1","kva":990,"pkva":530.3,"pct":53.6,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS133":[{"dt":"2551AGJ-HKS133A-1","kva":990,"pkva":490.6,"pct":49.6,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS134":[{"dt":"2551AGJ-HKS134A-1","kva":630,"pkva":521.8,"pct":82.8,"range":"80-100","month":"May-26"},{"dt":"2551AGJ-HKS134A-2","kva":990,"pkva":569.7,"pct":57.5,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS134A-3","kva":1600,"pkva":602.5,"pct":37.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS135":[{"dt":"2551AGJ-HKS135A-1","kva":990,"pkva":882.2,"pct":89.1,"range":"80-100","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS136":[{"dt":"2551AGJ-HKS136A-1","kva":990,"pkva":431.8,"pct":43.6,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS137":[{"dt":"2551AGJ-HKS137A-1","kva":990,"pkva":570.5,"pct":57.6,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS137A-2","kva":1600,"pkva":1114.5,"pct":69.7,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS139":[{"dt":"2551AGJ-HKS139A-1","kva":630,"pkva":304.0,"pct":48.3,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS140":[{"dt":"2551AGJ-HKS140A-1","kva":990,"pkva":333.8,"pct":33.7,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS140A-2","kva":1600,"pkva":625.9,"pct":39.1,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS141":[{"dt":"2551AGJ-HKS141A-1","kva":990,"pkva":1072.8,"pct":108.4,"range":">100","month":"May-26"},{"dt":"2551AGJ-HKS141A-2","kva":1600,"pkva":1077.7,"pct":67.4,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS142":[{"dt":"2551AGJ-HKS142A-1","kva":630,"pkva":130.6,"pct":20.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS144":[{"dt":"2551AGJ-HKS144A-1","kva":400,"pkva":14.3,"pct":3.6,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS145":[{"dt":"2551AGJ-HKS145A-1","kva":990,"pkva":573.6,"pct":57.9,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS145A-2","kva":990,"pkva":590.4,"pct":59.6,"range":"<60","month":"Jun-26"},{"dt":"2551AGJ-HKS145A-3","kva":990,"pkva":518.3,"pct":52.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS146":[{"dt":"2551AGJ-HKS146A-1","kva":990,"pkva":561.7,"pct":56.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS147":[{"dt":"2551AGJ-HKS147A-1","kva":990,"pkva":541.8,"pct":54.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS191":[{"dt":"2551AGJ-HKS191A-1","kva":400,"pkva":76.5,"pct":19.1,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS210":[{"dt":"2551AGJ-HKS210A-1","kva":400,"pkva":97.5,"pct":24.4,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS210A-2","kva":400,"pkva":155.5,"pct":38.9,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS211":[{"dt":"2551AGJ-HKS211A-1","kva":400,"pkva":51.7,"pct":12.9,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS211A-2","kva":400,"pkva":59.5,"pct":14.9,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS212":[{"dt":"2551AGJ-HKS212A-1","kva":400,"pkva":131.0,"pct":32.8,"range":"<60","month":"Jun-26"},{"dt":"2551AGJ-HKS212A-2","kva":400,"pkva":77.9,"pct":19.5,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS213":[{"dt":"2551AGJ-HKS213A-1","kva":400,"pkva":48.9,"pct":12.2,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS213A-2","kva":400,"pkva":57.5,"pct":14.4,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS214":[{"dt":"2551AGJ-HKS214A-1","kva":400,"pkva":55.9,"pct":14.0,"range":"<60","month":"May-26"},{"dt":"2551AGJ-HKS214A-2","kva":400,"pkva":85.3,"pct":21.3,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS216":[{"dt":"2551AGJ-HKS216A-1","kva":990,"pkva":604.4,"pct":61.0,"range":"60-80","month":"Jun-26"},{"dt":"2551AGJ-HKS216A-2","kva":990,"pkva":597.4,"pct":60.3,"range":"60-80","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS217":[{"dt":"2551AGJ-HKS217A-1","kva":630,"pkva":117.3,"pct":18.6,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS219":[{"dt":"2551AGJ-HKS219A-1","kva":400,"pkva":90.1,"pct":22.5,"range":"<60","month":"Jun-26"},{"dt":"2551AGJ-HKS219A-2","kva":400,"pkva":87.7,"pct":21.9,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS221":[{"dt":"2551AGJ-HKS221A-1","kva":990,"pkva":809.1,"pct":81.7,"range":"80-100","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS225":[{"dt":"2551AGJ-HKS225A-1","kva":990,"pkva":868.4,"pct":87.7,"range":"80-100","month":"May-26"},{"dt":"2551AGJ-HKS225A-2","kva":630,"pkva":499.6,"pct":79.3,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS226":[{"dt":"2551AGJ-HKS226A-1","kva":990,"pkva":311.8,"pct":31.5,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS299":[{"dt":"2551AGJ-HKS299A-1","kva":630,"pkva":342.4,"pct":54.4,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS300":[{"dt":"2551AGJ-HKS300A-1","kva":630,"pkva":395.0,"pct":62.7,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS302":[{"dt":"2551AGJ-HKS302A-1","kva":630,"pkva":543.3,"pct":86.2,"range":"80-100","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS316":[{"dt":"2551AGJ-HKS316A-1","kva":630,"pkva":188.2,"pct":29.9,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS320":[{"dt":"2551AGJ-HKS320A-1","kva":630,"pkva":149.6,"pct":23.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS323":[{"dt":"2551AGJ-HKS323A-1","kva":250,"pkva":93.4,"pct":37.4,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS325":[{"dt":"2551AGJ-HKS325A-1","kva":630,"pkva":404.2,"pct":64.2,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS331":[{"dt":"2551AGJ-HKS331A-1","kva":1000,"pkva":291.9,"pct":29.2,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS332":[{"dt":"2551AGJ-HKS332A-1","kva":630,"pkva":84.9,"pct":13.5,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS336":[{"dt":"2551AGJ-HKS336A-1","kva":400,"pkva":0.0,"pct":0.0,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-MOB002":[{"dt":"2551AGJ-MOB002A-1","kva":630,"pkva":436.4,"pct":69.3,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS015":[{"dt":"2551GPK-HKS015A-1","kva":630,"pkva":451.7,"pct":71.7,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS015A-2","kva":990,"pkva":762.8,"pct":77.0,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS015A-3","kva":630,"pkva":511.0,"pct":81.1,"range":"80-100","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS022":[{"dt":"2551GPK-HKS022A-1","kva":990,"pkva":585.9,"pct":59.2,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS022A-2","kva":630,"pkva":408.6,"pct":64.9,"range":"60-80","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS023":[{"dt":"2551GPK-HKS023A-1","kva":990,"pkva":422.8,"pct":42.7,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS023A-2","kva":990,"pkva":429.7,"pct":43.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS024":[{"dt":"2551GPK-HKS024A-1","kva":990,"pkva":675.7,"pct":68.3,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS024A-2","kva":990,"pkva":476.5,"pct":48.1,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS025":[{"dt":"2551GPK-HKS025A-1","kva":990,"pkva":403.3,"pct":40.7,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS025A-2","kva":990,"pkva":379.9,"pct":38.4,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS026":[{"dt":"2551GPK-HKS026A-1","kva":990,"pkva":646.2,"pct":65.3,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS026A-2","kva":630,"pkva":178.7,"pct":28.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS027":[{"dt":"2551GPK-HKS027A-1","kva":990,"pkva":458.1,"pct":46.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS028":[{"dt":"2551GPK-HKS028A-1","kva":990,"pkva":667.9,"pct":67.5,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS028A-2","kva":990,"pkva":759.0,"pct":76.7,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS029":[{"dt":"2551GPK-HKS029A-1","kva":990,"pkva":455.2,"pct":46.0,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS029A-2","kva":990,"pkva":440.4,"pct":44.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS030":[{"dt":"2551GPK-HKS030A-1","kva":990,"pkva":458.7,"pct":46.3,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS030A-2","kva":990,"pkva":405.1,"pct":40.9,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS031":[{"dt":"2551GPK-HKS031A-1","kva":1000,"pkva":605.0,"pct":60.5,"range":"60-80","month":"Jun-26"},{"dt":"2551GPK-HKS031A-2","kva":990,"pkva":537.9,"pct":54.3,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS031A-3","kva":1000,"pkva":654.0,"pct":65.4,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS035":[{"dt":"2551GPK-HKS035A-1","kva":990,"pkva":289.7,"pct":29.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS036":[{"dt":"2551GPK-HKS036A-1","kva":990,"pkva":499.8,"pct":50.5,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS036A-2","kva":990,"pkva":731.3,"pct":73.9,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS036A-3","kva":990,"pkva":490.8,"pct":49.6,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS071":[{"dt":"2551GPK-HKS071A-1","kva":990,"pkva":693.0,"pct":70.0,"range":"60-80","month":"Jun-26"},{"dt":"2551GPK-HKS071A-2","kva":990,"pkva":647.8,"pct":65.4,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS071A-3","kva":990,"pkva":589.9,"pct":59.6,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS071A-4","kva":990,"pkva":497.5,"pct":50.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS072":[{"dt":"2551GPK-HKS072A-1","kva":990,"pkva":957.5,"pct":96.7,"range":"80-100","month":"May-26"},{"dt":"2551GPK-HKS072A-2","kva":990,"pkva":742.0,"pct":74.9,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS073":[{"dt":"2551GPK-HKS073A-2","kva":990,"pkva":627.2,"pct":63.4,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS073A-3","kva":400,"pkva":268.4,"pct":67.1,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS073A-4","kva":990,"pkva":613.1,"pct":61.9,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS074":[{"dt":"2551GPK-HKS074A-1","kva":990,"pkva":323.8,"pct":32.7,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS074A-2","kva":990,"pkva":434.0,"pct":43.8,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS075":[{"dt":"2551GPK-HKS075A-1","kva":990,"pkva":413.9,"pct":41.8,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS075A-2","kva":630,"pkva":378.8,"pct":60.1,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS076":[{"dt":"2551GPK-HKS076A-1","kva":990,"pkva":472.1,"pct":47.7,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS076A-2","kva":990,"pkva":630.6,"pct":63.7,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS077":[{"dt":"2551GPK-HKS077A-1","kva":630,"pkva":245.7,"pct":39.0,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS077A-2","kva":1000,"pkva":387.0,"pct":38.7,"range":"<60","month":"Jun-26"},{"dt":"2551GPK-HKS077A-3","kva":630,"pkva":328.5,"pct":52.1,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS078":[{"dt":"2551GPK-HKS078A-1","kva":990,"pkva":389.5,"pct":39.3,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS078A-2","kva":990,"pkva":625.5,"pct":63.2,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS078A-3","kva":990,"pkva":691.1,"pct":69.8,"range":"60-80","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS079":[{"dt":"2551GPK-HKS079A-1","kva":990,"pkva":513.2,"pct":51.8,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS079A-2","kva":990,"pkva":312.0,"pct":31.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS080":[{"dt":"2551GPK-HKS080A-1","kva":990,"pkva":549.5,"pct":55.5,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS080A-2","kva":990,"pkva":591.4,"pct":59.7,"range":"<60","month":"Jun-26"},{"dt":"2551GPK-HKS080A-3","kva":1600,"pkva":862.9,"pct":53.9,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS081":[{"dt":"2551GPK-HKS081A-1","kva":990,"pkva":652.9,"pct":66.0,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS081A-2","kva":990,"pkva":525.6,"pct":53.1,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS081A-3","kva":990,"pkva":652.9,"pct":65.9,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS083":[{"dt":"2551GPK-HKS083A-1","kva":990,"pkva":491.2,"pct":49.6,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS083A-2","kva":990,"pkva":817.3,"pct":82.6,"range":"80-100","month":"May-26"},{"dt":"2551GPK-HKS083A-3","kva":990,"pkva":597.8,"pct":60.4,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS084":[{"dt":"2551GPK-HKS084A-1","kva":990,"pkva":713.3,"pct":72.1,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS084A-2","kva":990,"pkva":508.0,"pct":51.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS085":[{"dt":"2551GPK-HKS085A-1","kva":1000,"pkva":573.8,"pct":57.4,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS086":[{"dt":"2551GPK-HKS086A-1","kva":990,"pkva":832.0,"pct":84.0,"range":"80-100","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS088":[{"dt":"2551GPK-HKS088A-1","kva":990,"pkva":351.4,"pct":35.5,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS088A-2","kva":990,"pkva":393.1,"pct":39.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS089":[{"dt":"2551GPK-HKS089A-1","kva":990,"pkva":202.8,"pct":20.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS090":[{"dt":"2551GPK-HKS090A-1","kva":990,"pkva":418.2,"pct":42.2,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS090A-2","kva":990,"pkva":523.0,"pct":52.8,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS091":[{"dt":"2551GPK-HKS091A-1","kva":990,"pkva":751.2,"pct":75.9,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS091A-2","kva":990,"pkva":495.3,"pct":50.0,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS092":[{"dt":"2551GPK-HKS092A-1","kva":990,"pkva":785.3,"pct":79.3,"range":"60-80","month":"Jun-26"},{"dt":"2551GPK-HKS092A-2","kva":990,"pkva":549.2,"pct":55.5,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS092A-3","kva":630,"pkva":121.7,"pct":19.3,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS093":[{"dt":"2551GPK-HKS093A-1","kva":990,"pkva":327.4,"pct":33.1,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS093A-2","kva":990,"pkva":581.9,"pct":58.8,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS093A-3","kva":990,"pkva":690.9,"pct":69.8,"range":"60-80","month":"May-26"},{"dt":"2551GPK-HKS093A-4","kva":400,"pkva":118.8,"pct":29.7,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS094":[{"dt":"2551GPK-HKS094A-1","kva":630,"pkva":297.2,"pct":47.2,"range":"<60","month":"May-26"},{"dt":"2551GPK-HKS094A-2","kva":990,"pkva":570.9,"pct":57.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS095":[{"dt":"2551GPK-HKS095A-1","kva":990,"pkva":543.4,"pct":54.9,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS096":[{"dt":"2551GPK-HKS096A-1","kva":990,"pkva":564.6,"pct":57.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS097":[{"dt":"2551GPK-HKS097A-1","kva":990,"pkva":453.4,"pct":45.8,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS138":[{"dt":"2551GPK-HKS138A-1","kva":400,"pkva":205.7,"pct":51.4,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS205":[{"dt":"2551GPK-HKS205A-1","kva":630,"pkva":472.6,"pct":75.0,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS227":[{"dt":"2551GPK-HKS227A-1","kva":990,"pkva":545.9,"pct":55.1,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS228":[{"dt":"2551GPK-HKS228A-1","kva":400,"pkva":87.0,"pct":21.8,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS230":[{"dt":"2551GPK-HKS230A-1","kva":990,"pkva":368.0,"pct":37.2,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS232":[{"dt":"2551GPK-HKS232A-1","kva":990,"pkva":695.3,"pct":70.2,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS233":[{"dt":"2551GPK-HKS233A-1","kva":990,"pkva":514.9,"pct":52.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS264":[{"dt":"2551GPK-HKS264A-1","kva":400,"pkva":193.1,"pct":48.3,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS265":[{"dt":"2551GPK-HKS265A-1","kva":630,"pkva":256.1,"pct":40.7,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS269":[{"dt":"2551GPK-HKS269A-1","kva":990,"pkva":869.0,"pct":87.8,"range":"80-100","month":"May-26"},{"dt":"2551GPK-HKS269A-2","kva":1600,"pkva":886.0,"pct":55.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS271":[{"dt":"2551GPK-HKS271A-1","kva":1600,"pkva":990.6,"pct":61.9,"range":"60-80","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS276":[{"dt":"2551GPK-HKS276A-1","kva":990,"pkva":745.5,"pct":75.3,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS278":[{"dt":"2551GPK-HKS278A-1","kva":630,"pkva":334.1,"pct":53.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS286":[{"dt":"2551GPK-HKS286A-1","kva":1600,"pkva":920.1,"pct":57.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS296":[{"dt":"2551GPK-HKS296A-1","kva":1600,"pkva":978.8,"pct":61.2,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS301":[{"dt":"2551GPK-HKS301A-1","kva":990,"pkva":339.7,"pct":34.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS308":[{"dt":"2551GPK-HKS308A-1","kva":630,"pkva":301.4,"pct":47.8,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS314":[{"dt":"2551GPK-HKS314A-1","kva":630,"pkva":462.8,"pct":73.5,"range":"60-80","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS317":[{"dt":"2551GPK-HKS317A-1","kva":630,"pkva":477.3,"pct":75.8,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS328":[{"dt":"2551GPK-HKS328A-1","kva":250,"pkva":166.6,"pct":66.6,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS330":[{"dt":"2551GPK-HKS330A-1","kva":250,"pkva":85.9,"pct":34.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS335":[{"dt":"2551GPK-HKS335A-1","kva":990,"pkva":231.0,"pct":23.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS001":[{"dt":"2551KTS-HKS001A-1","kva":1600,"pkva":799.6,"pct":50.0,"range":"<60","month":"Jun-26"},{"dt":"2551KTS-HKS001A-2","kva":990,"pkva":734.5,"pct":74.2,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS002":[{"dt":"2551KTS-HKS002A-1","kva":990,"pkva":334.0,"pct":33.7,"range":"<60","month":"Jun-26"},{"dt":"2551KTS-HKS002A-2","kva":400,"pkva":108.3,"pct":27.1,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS003":[{"dt":"2551KTS-HKS003A-1","kva":990,"pkva":548.4,"pct":55.4,"range":"<60","month":"May-26"},{"dt":"2551KTS-HKS003A-2","kva":400,"pkva":267.5,"pct":66.9,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS004":[{"dt":"2551KTS-HKS004A-1","kva":630,"pkva":391.5,"pct":62.1,"range":"60-80","month":"Jun-26"},{"dt":"2551KTS-HKS004A-2","kva":630,"pkva":212.5,"pct":33.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS005":[{"dt":"2551KTS-HKS005A-1","kva":990,"pkva":660.9,"pct":66.8,"range":"60-80","month":"Jun-26"},{"dt":"2551KTS-HKS005A-2","kva":990,"pkva":559.7,"pct":56.5,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS006":[{"dt":"2551KTS-HKS006A-1","kva":630,"pkva":101.5,"pct":16.1,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS007":[{"dt":"2551KTS-HKS007A-1","kva":630,"pkva":90.9,"pct":14.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS008":[{"dt":"2551KTS-HKS008A-1","kva":630,"pkva":114.5,"pct":18.2,"range":"<60","month":"Jun-26"},{"dt":"2551KTS-HKS008A-2","kva":400,"pkva":32.1,"pct":8.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS009":[{"dt":"2551KTS-HKS009A-1","kva":630,"pkva":155.3,"pct":24.7,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS010":[{"dt":"2551KTS-HKS010A-1","kva":990,"pkva":214.7,"pct":21.7,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS011":[{"dt":"2551KTS-HKS011A-1","kva":630,"pkva":134.9,"pct":21.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS012":[{"dt":"2551KTS-HKS012A-1","kva":990,"pkva":280.4,"pct":28.3,"range":"<60","month":"May-26"},{"dt":"2551KTS-HKS012A-2","kva":990,"pkva":447.1,"pct":45.2,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS013":[{"dt":"2551KTS-HKS013A-1","kva":990,"pkva":760.1,"pct":76.8,"range":"60-80","month":"May-26"},{"dt":"2551KTS-HKS013A-2","kva":630,"pkva":377.0,"pct":59.8,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS016":[{"dt":"2551KTS-HKS016A-1","kva":990,"pkva":311.0,"pct":31.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS017":[{"dt":"2551KTS-HKS017A-1","kva":990,"pkva":492.9,"pct":49.8,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS018":[{"dt":"2551KTS-HKS018A-1","kva":990,"pkva":516.5,"pct":52.2,"range":"<60","month":"May-26"},{"dt":"2551KTS-HKS018A-2","kva":990,"pkva":494.8,"pct":50.0,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS020":[{"dt":"2551KTS-HKS020A-1","kva":100,"pkva":4.8,"pct":4.8,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS021":[{"dt":"2551KTS-HKS021A-1","kva":400,"pkva":51.0,"pct":12.8,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS143":[{"dt":"2551KTS-HKS143A-1","kva":630,"pkva":193.1,"pct":30.6,"range":"<60","month":"May-26"},{"dt":"2551KTS-HKS143A-4","kva":630,"pkva":228.0,"pct":36.2,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS223":[{"dt":"2551KTS-HKS223A-1","kva":990,"pkva":824.4,"pct":83.3,"range":"80-100","month":"May-26"},{"dt":"2551KTS-HKS223A-2","kva":630,"pkva":679.7,"pct":107.9,"range":">100","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS244":[{"dt":"2551KTS-HKS244A-1","kva":990,"pkva":1110.4,"pct":112.2,"range":">100","month":"May-26"},{"dt":"2551KTS-HKS244A-2","kva":990,"pkva":833.4,"pct":84.2,"range":"80-100","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS293":[{"dt":"2551KTS-HKS293A-1","kva":630,"pkva":152.8,"pct":24.3,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS309":[{"dt":"2551KTS-HKS309A-1","kva":630,"pkva":366.9,"pct":58.2,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS319":[{"dt":"2551KTS-HKS319A-1","kva":250,"pkva":73.4,"pct":29.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS150":[{"dt":"2551RBI-HKS150A-1","kva":990,"pkva":219.6,"pct":22.2,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS150A-2","kva":990,"pkva":232.7,"pct":23.5,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS151":[{"dt":"2551RBI-HKS151A-1","kva":990,"pkva":238.6,"pct":24.1,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS151A-2","kva":990,"pkva":314.4,"pct":31.8,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS152":[{"dt":"2551RBI-HKS152A-1","kva":990,"pkva":249.7,"pct":25.2,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS152A-2","kva":990,"pkva":223.1,"pct":22.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS153":[{"dt":"2551RBI-HKS153A-1","kva":630,"pkva":172.7,"pct":27.4,"range":"<60","month":"Jun-26"},{"dt":"2551RBI-HKS153A-2","kva":630,"pkva":129.5,"pct":20.6,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS154":[{"dt":"2551RBI-HKS154A-1","kva":630,"pkva":391.9,"pct":62.2,"range":"60-80","month":"May-26"},{"dt":"2551RBI-HKS154A-2","kva":990,"pkva":136.8,"pct":13.8,"range":"<60","month":"Jun-26"},{"dt":"2551RBI-HKS154A-3","kva":990,"pkva":653.8,"pct":66.0,"range":"60-80","month":"May-26"},{"dt":"2551RBI-HKS154A-4","kva":990,"pkva":509.8,"pct":51.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS155":[{"dt":"2551RBI-HKS155A-1","kva":990,"pkva":300.0,"pct":30.3,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS155A-2","kva":990,"pkva":512.9,"pct":51.8,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS156":[{"dt":"2551RBI-HKS156A-1","kva":630,"pkva":341.0,"pct":54.1,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS157":[{"dt":"2551RBI-HKS157A-1","kva":630,"pkva":186.7,"pct":29.6,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS158":[{"dt":"2551RBI-HKS158A-1","kva":990,"pkva":214.3,"pct":21.6,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS159":[{"dt":"2551RBI-HKS159A-1","kva":990,"pkva":617.5,"pct":62.4,"range":"60-80","month":"Jun-26"},{"dt":"2551RBI-HKS159A-2","kva":990,"pkva":403.3,"pct":40.7,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS160":[{"dt":"2551RBI-HKS160A-1","kva":990,"pkva":242.1,"pct":24.5,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS160A-2","kva":400,"pkva":161.8,"pct":40.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS161":[{"dt":"2551RBI-HKS161A-1","kva":630,"pkva":104.3,"pct":16.6,"range":"<60","month":"Jun-26"},{"dt":"2551RBI-HKS161A-2","kva":400,"pkva":109.9,"pct":27.5,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS162":[{"dt":"2551RBI-HKS162A-1","kva":630,"pkva":347.4,"pct":55.1,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS162A-2","kva":630,"pkva":437.9,"pct":69.5,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS163":[{"dt":"2551RBI-HKS163A-1","kva":1600,"pkva":1185.9,"pct":74.1,"range":"60-80","month":"May-26"},{"dt":"2551RBI-HKS163A-2","kva":990,"pkva":443.1,"pct":44.8,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS164":[{"dt":"2551RBI-HKS164A-1","kva":1000,"pkva":519.1,"pct":51.9,"range":"<60","month":"Jun-26"},{"dt":"2551RBI-HKS164A-2","kva":990,"pkva":456.6,"pct":46.1,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS165":[{"dt":"2551RBI-HKS165A-1","kva":990,"pkva":355.6,"pct":35.9,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS165A-2","kva":990,"pkva":455.4,"pct":46.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS166":[{"dt":"2551RBI-HKS166A-1","kva":630,"pkva":403.8,"pct":64.1,"range":"60-80","month":"Jun-26"},{"dt":"2551RBI-HKS166A-2","kva":990,"pkva":469.1,"pct":47.4,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS167":[{"dt":"2551RBI-HKS167A-1","kva":630,"pkva":319.4,"pct":50.7,"range":"<60","month":"Jun-26"},{"dt":"2551RBI-HKS167A-2","kva":630,"pkva":278.5,"pct":44.2,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS168":[{"dt":"2551RBI-HKS168A-1","kva":630,"pkva":285.6,"pct":45.3,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS168A-2","kva":990,"pkva":677.7,"pct":68.5,"range":"60-80","month":"May-26"},{"dt":"2551RBI-HKS168A-3","kva":990,"pkva":563.4,"pct":56.9,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS169":[{"dt":"2551RBI-HKS169A-1","kva":630,"pkva":235.0,"pct":37.3,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS169A-2","kva":990,"pkva":643.5,"pct":65.0,"range":"60-80","month":"May-26"},{"dt":"2551RBI-HKS169A-3","kva":630,"pkva":133.3,"pct":21.2,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS170":[{"dt":"2551RBI-HKS170A-1","kva":990,"pkva":483.8,"pct":48.9,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS170A-2","kva":990,"pkva":495.2,"pct":50.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS171":[{"dt":"2551RBI-HKS171A-1","kva":990,"pkva":636.4,"pct":64.3,"range":"60-80","month":"May-26"},{"dt":"2551RBI-HKS171A-2","kva":630,"pkva":516.4,"pct":82.0,"range":"80-100","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS172":[{"dt":"2551RBI-HKS172A-1","kva":990,"pkva":645.5,"pct":65.2,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS173":[{"dt":"2551RBI-HKS173A-1","kva":990,"pkva":605.8,"pct":61.2,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS174":[{"dt":"2551RBI-HKS174A-1","kva":990,"pkva":208.8,"pct":21.1,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS175":[{"dt":"2551RBI-HKS175A-1","kva":630,"pkva":401.5,"pct":63.7,"range":"60-80","month":"May-26"},{"dt":"2551RBI-HKS175A-2","kva":630,"pkva":314.4,"pct":49.9,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS176":[{"dt":"2551RBI-HKS176A-1","kva":630,"pkva":502.4,"pct":79.7,"range":"60-80","month":"May-26"},{"dt":"2551RBI-HKS176A-2","kva":990,"pkva":309.8,"pct":31.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS177":[{"dt":"2551RBI-HKS177A-1","kva":990,"pkva":589.6,"pct":59.6,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS178":[{"dt":"2551RBI-HKS178A-1","kva":630,"pkva":373.9,"pct":59.4,"range":"<60","month":"Jun-26"},{"dt":"2551RBI-HKS178A-2","kva":990,"pkva":665.1,"pct":67.2,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS179":[{"dt":"2551RBI-HKS179A-1","kva":990,"pkva":504.3,"pct":50.9,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS179A-2","kva":990,"pkva":623.7,"pct":63.0,"range":"60-80","month":"Jun-26"},{"dt":"2551RBI-HKS179A-3","kva":630,"pkva":475.7,"pct":75.5,"range":"60-80","month":"May-26"},{"dt":"2551RBI-HKS179A-4","kva":990,"pkva":486.7,"pct":49.2,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS180":[{"dt":"2551RBI-HKS180A-1","kva":990,"pkva":592.1,"pct":59.8,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS181":[{"dt":"2551RBI-HKS181A-1","kva":990,"pkva":508.8,"pct":51.4,"range":"<60","month":"Jun-26"},{"dt":"2551RBI-HKS181A-2","kva":990,"pkva":584.2,"pct":59.0,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS182":[{"dt":"2551RBI-HKS182A-1","kva":1000,"pkva":651.2,"pct":65.1,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS183":[{"dt":"2551RBI-HKS183A-1","kva":630,"pkva":558.0,"pct":88.6,"range":"80-100","month":"May-26"},{"dt":"2551RBI-HKS183A-2","kva":630,"pkva":206.4,"pct":32.8,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS183A-3","kva":630,"pkva":259.0,"pct":41.1,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS184":[{"dt":"2551RBI-HKS184A-1","kva":990,"pkva":367.6,"pct":37.1,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS185":[{"dt":"2551RBI-HKS185A-1","kva":630,"pkva":283.4,"pct":45.0,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS186":[{"dt":"2551RBI-HKS186A-1","kva":990,"pkva":242.2,"pct":24.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS220":[{"dt":"2551RBI-HKS220A-1","kva":630,"pkva":356.7,"pct":56.6,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS220A-2","kva":990,"pkva":490.3,"pct":49.5,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS222":[{"dt":"2551RBI-HKS222A-1","kva":400,"pkva":22.0,"pct":5.5,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS224":[{"dt":"2551RBI-HKS224A-1","kva":630,"pkva":368.2,"pct":58.5,"range":"<60","month":"May-26"},{"dt":"2551RBI-HKS224A-2","kva":630,"pkva":361.2,"pct":57.3,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS250":[{"dt":"2551RBI-HKS250A-1","kva":990,"pkva":319.7,"pct":32.3,"range":"<60","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS251":[{"dt":"2551RBI-HKS251A-1","kva":400,"pkva":141.1,"pct":35.3,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS254":[{"dt":"2551RBI-HKS254A-1","kva":990,"pkva":427.0,"pct":43.1,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS275":[{"dt":"2551RBI-HKS275A-1","kva":630,"pkva":327.1,"pct":51.9,"range":"<60","month":"Apr-26"}],"1S-DL-RP-STC-DHKS-1651-HKS289":[{"dt":"2551RBI-HKS289A-1","kva":1600,"pkva":726.4,"pct":45.4,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS290":[{"dt":"2551RBI-HKS290A-1","kva":990,"pkva":690.4,"pct":69.7,"range":"60-80","month":"May-26"}],"1S-DL-RP-STC-DHKS-1651-HKS303":[{"dt":"2551RBI-HKS303A-1","kva":630,"pkva":121.8,"pct":19.3,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS305":[{"dt":"2551RBI-HKS305A-1","kva":990,"pkva":200.0,"pct":20.2,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-HKS315":[{"dt":"2551RBI-HKS315A-1","kva":400,"pkva":130.8,"pct":32.7,"range":"<60","month":"Jun-26"}],"1S-DL-RP-STC-DHKS-1651-MOB001":[{"dt":"2551RBI-MOB001A-1","kva":630,"pkva":293.3,"pct":46.6,"range":"<60","month":"Apr-26"}]};
+
+/* ══ FEEDER PEAK LOADING (Jan-Jul 26) ══ */
+const FEEDER_LOADING={"IITD11B11991":{"grid":"IIT GRID","name":"11kV FDR O/G PROFESSOR FLATS I.I.T S/STN","peakMW":60.41,"peakDate":"06-Jan-26"},"VASB11B11151":{"grid":"VKJ B BLK GRID","name":"11kV FDR WARD-2 MEHRAULI","peakMW":211.72,"peakDate":"08-Jun-26"},"VASB11B11051":{"grid":"VKJ B BLK GRID","name":"11kV FDR TEKCHAND FEEDER","peakMW":200.34,"peakDate":"25-Apr-26"},"VASB11B11981":{"grid":"VKJ B BLK GRID","name":"11kV FDR FORTIS HOSPITAL FEEDER-1","peakMW":7.1,"peakDate":"22-May-26"},"ADCH11B11031":{"grid":"ADCHINI GRID","name":"11kV FDR T.B HOSPITAL","peakMW":155.77,"peakDate":"22-May-26"},"VASB11B11171":{"grid":"VKJ B BLK GRID","name":"11kV FDR FORTIS HOSPITAL FEEDER-2 DAHYA KISANGARH (RMU IN GRID)","peakMW":152.6,"peakDate":"17-May-26"},"VASB11B11991":{"grid":"VKJ B BLK GRID","name":"11kV FDR MOTHER DAIRY S/S VIA WARD NO.2 (RMU)","peakMW":185.25,"peakDate":"26-May-26"},"VASB11B11131":{"grid":"VKJ B BLK GRID","name":"11kV FDR LIVER HOSPITAL(DIVISION VASANT KUNJ)","peakMW":175.66,"peakDate":"17-May-26"},"VASB11B11031":{"grid":"VKJ B BLK GRID","name":"11kV FDR SECTOR A-2 VASANT KUNJ","peakMW":184.74,"peakDate":"26-May-26"},"VASB11B11041":{"grid":"VKJ B BLK GRID","name":"11kV FDR SECTOR B-4 VASANT KUNJ","peakMW":169.18,"peakDate":"25-May-26"},"VASB11B11181":{"grid":"VKJ B BLK GRID","name":"11kV FDR S/S NO-1+B-5 & 6 VASANT KUNJ","peakMW":158.68,"peakDate":"08-Jun-26"},"JNUV11B11041":{"grid":"JNU GRID","name":"11kV FDR BUDH VIHAR VIA 3 WAY O/D RMU INSTALLED AT GRID","peakMW":136.9,"peakDate":"10-Jun-26"},"JNUV11B11051":{"grid":"JNU GRID","name":"11kV FDR SFS VASANT VIHAR","peakMW":213.38,"peakDate":"29-Jun-26"},"IITD11B11101":{"grid":"IIT GRID","name":"11kV FDR O/G S.I.I.A NO.-5,KATWARIA SARAI","peakMW":142.77,"peakDate":"22-May-26"},"IITD11B11121":{"grid":"IIT GRID","name":"11kV FDR O/G TELEPHONE EXCHANGE S.D.A","peakMW":79.23,"peakDate":"09-Jan-26"},"IITD11B11041":{"grid":"IIT GRID","name":"11kV FDR BHARTI SCHOOL FDR.\u22121+11KV FDR CSMRS (DOUBLE CABLE)","peakMW":101.91,"peakDate":"11-Jun-26"},"JNUV11B11141":{"grid":"JNU GRID","name":"11kV FDR N. INST.IMMUNOLOGY","peakMW":81.28,"peakDate":"13-May-26"},"IITD11B11111":{"grid":"IIT GRID","name":"11kV FDR O/G  I.I.T MINI CAMPUS+11KV FDR BHARTI SCHOOL FDR. -2","peakMW":136.17,"peakDate":"22-May-26"},"IITD11B11031":{"grid":"IIT GRID","name":"11kV FDR S.I.I.A NO.-4","peakMW":94.83,"peakDate":"07-Jan-26"},"IITD11B11051":{"grid":"IIT GRID","name":"11kV FDR O/G TIFAC BUILDING","peakMW":265.89,"peakDate":"25-May-26"},"JNUV11B11121":{"grid":"JNU GRID","name":"11kV FDR MUNREKA VIHAR","peakMW":179.48,"peakDate":"25-May-26"},"JNUV11B11061":{"grid":"JNU GRID","name":"11kV FDR 11KV O/G J.N.U NEW CAMPUS -1","peakMW":155.2,"peakDate":"22-May-26"},"JNUV11B11151":{"grid":"JNU GRID","name":"11kV FDR 11KV O/G J.N.U NO.-II (NEW S/SSTN.)","peakMW":126.16,"peakDate":"25-May-26"},"IITD11B11021":{"grid":"IIT GRID","name":"11kV FDR S.I.I.A NO.-1","peakMW":131.19,"peakDate":"18-Jun-26"},"JNUV11B11031":{"grid":"JNU GRID","name":"11kV FDR LOCAL TRANSFORMER VIA 4 WAY O/D RMU INSTALLED IN GRID","peakMW":3.13,"peakDate":"04-Jan-26"},"ADCH11B11981":{"grid":"ADCHINI GRID","name":"11kV FDR O/G B-8 QUTUB INSDUSTRIAL AREA","peakMW":55.03,"peakDate":"22-May-26"},"IITD11B11091":{"grid":"IIT GRID","name":"11kV STR 100kVA STATION TRANSFORMER","peakMW":7.76,"peakDate":"07-Jan-26"},"VASB11B11021":{"grid":"VKJ B BLK GRID","name":"11kV STR 100kVA STATION TRANS.","peakMW":2.04,"peakDate":"19-May-26"},"ADCH11B11261":{"grid":"ADCHINI GRID","name":"11kV FDR ADCHINI CROSSING","peakMW":189.39,"peakDate":"15-May-26"},"IITD11B11141":{"grid":"IIT GRID","name":"11kV FDR O/G  I.I.T CAMPUS S/S NO.-III","peakMW":157.74,"peakDate":"22-May-26"},"JNUV11B11021":{"grid":"JNU GRID","name":"11kV FDR VASANT LOK","peakMW":232.16,"peakDate":"09-Jun-26"},"IITD11B11131":{"grid":"IIT GRID","name":"11kV FDR O/G FSI MUNERKA JNU OLD CAMPUS","peakMW":60.95,"peakDate":"07-Jan-26"},"JNUV11B11131":{"grid":"JNU GRID","name":"11kV FDR O/G HOTEL SIDDHARTHA VASANT LOK VASANT VIHAR","peakMW":208.32,"peakDate":"15-May-26"},"ADCH11B11111":{"grid":"ADCHINI GRID","name":"11kV FDR TIKONA PARK","peakMW":152.6,"peakDate":"08-Jan-26"},"VASB11B11971":{"grid":"VKJ B BLK GRID","name":"11kV FDR 160 HIG DDA FLATS S/S B-2 VKJ","peakMW":219.0,"peakDate":"06-Jul-26"},"VASB11B11141":{"grid":"VKJ B BLK GRID","name":"11kV FDR B-1, S/S NO.-1, VASANT KUNJ","peakMW":134.62,"peakDate":"25-May-26"},"ADCH11B11271":{"grid":"ADCHINI GRID","name":"11kV FDR HTC IB AUROBINDO MARG","peakMW":238.24,"peakDate":"27-Jun-26"},"ADCH11B11221":{"grid":"ADCHINI GRID","name":"11kV FDR O/G 11KV MALVIYA NAGAR (VIA MMTC COLONEY)","peakMW":166.0,"peakDate":"09-Jan-26"},"ADCH11B11281":{"grid":"ADCHINI GRID","name":"11kV STR LOCAL TR","peakMW":6.79,"peakDate":"22-May-26"},"JNUV11B11101":{"grid":"JNU GRID","name":"11kV FDR O/G DDA FLATS MUNREKA S/S NO.\u2212III","peakMW":165.38,"peakDate":"11-Jan-26"},"VASB11B11061":{"grid":"VKJ B BLK GRID","name":"11kV FDR NUCLER SCIENCE CENTER","peakMW":100.88,"peakDate":"29-Jun-26"},"ADCH11B11021":{"grid":"ADCHINI GRID","name":"11kV FDR AUROBINDO MARG","peakMW":100.11,"peakDate":"10-Jun-26"},"ADCH11B11991":{"grid":"ADCHINI GRID","name":"11kV FDR O/G D.J.B MALVIYA NAGAR,VIA AUROBINDO COLLEGE","peakMW":57.63,"peakDate":"30-May-26"},"ADCH11B11131":{"grid":"ADCHINI GRID","name":"11kV FDR O/G KATWARIA SARAI (MULTI STORY) NO.-1","peakMW":106.14,"peakDate":"10-Jun-26"},"ADCH11B11041":{"grid":"ADCHINI GRID","name":"11kV FDR P.T.S COLONY","peakMW":137.32,"peakDate":"22-May-26"},"ADCH11B11051":{"grid":"ADCHINI GRID","name":"11kV FDR SARVODAYA ENCLAVE","peakMW":197.97,"peakDate":"29-Jun-26"},"ADCH11B11101":{"grid":"ADCHINI GRID","name":"11kV FDR LADO SARAI","peakMW":225.3,"peakDate":"29-Jun-26"},"ADCH11B11121":{"grid":"ADCHINI GRID","name":"11kV FDR SHIVALIK A-BLOCK","peakMW":169.36,"peakDate":"26-May-26"},"ADCH11B11141":{"grid":"ADCHINI GRID","name":"11kV FDR MMTC (VIA 81/3 ADCHINI)","peakMW":171.2,"peakDate":"25-May-26"},"ADCH11B11151":{"grid":"ADCHINI GRID","name":"11kV FDR O/G MALVIYA NGR. HOSPITAL","peakMW":194.73,"peakDate":"26-May-26"},"ADCH11B11241":{"grid":"ADCHINI GRID","name":"11kV FDR I.I.T S/S NO.-3","peakMW":139.08,"peakDate":"30-May-26"},"ADCH11B11231":{"grid":"ADCHINI GRID","name":"11kV FDR S.I.I.A NO.-II","peakMW":87.75,"peakDate":"22-May-26"},"VASB11B11071":{"grid":"VKJ B BLK GRID","name":"11kV FDR BIO-TECH FEEDER-1","peakMW":63.37,"peakDate":"22-May-26"},"VASB11B11121":{"grid":"VKJ B BLK GRID","name":"11kV FDR BIO TECH FEEDER-2","peakMW":186.35,"peakDate":"18-Jun-26"},"ADCH11B11251":{"grid":"ADCHINI GRID","name":"11kV FDR BHIM NAGRI (I.I.T S/S NO.-2","peakMW":240.7,"peakDate":"10-Jun-26"}};
+
 const FIELDS=[
   {key:'grid',label:'Grid Name',hints:['grid-merge','grid name','grid']},
   {key:'ptr',label:'PTR No',hints:['ptr no','ptr n','ptr']},
@@ -11077,13 +11209,27 @@ function mapsLink(label,latlong){
 
 /* ══ HELPERS ══ */
 function getDTs(fc){return dtLookup[fc]||[];}
+
+/* ══ LOADING HELPERS ══ */
+function getDTLoading(fc){return DT_LOADING[fc]||[];}
+function getFeederLoading(feederCode){return FEEDER_LOADING[feederCode]||null;}
+function loadingColor(pct){
+  if(pct>=100)return'#b91c1c';
+  if(pct>=80)return'#d97706';
+  if(pct>=60)return'#ca8a04';
+  return'#16a34a';
+}
+function loadingBadge(pct,range){
+  const col=loadingColor(pct);
+  return `<span style="font-family:'IBM Plex Mono',monospace;font-size:0.55rem;font-weight:700;padding:1px 4px;border-radius:2px;background:${col};color:white;">${range||'<60'}</span>`;
+}
 function getLoadClass(n){return n>1000?'load-critical':n>=500?'load-high':n>=100?'load-medium':'load-low';}
 function getLoadLabel(n){return n>1000?'CRIT':n>=500?'HIGH':n>=100?'MED':'LOW';}
 function getTypeClass(t){return t==='RMU only'?'type-rmu':t==='HTC'?'type-htc':'type-non-htc';}
 function getTypeLabel(t){return t==='RMU only'?'RMU':t==='HTC'?'HTC':'N-HTC';}
-function getRowClass(g){return g.includes('ADCHINI')?'row-adchini':g.includes('IIT')?'row-iit':g.includes('J.N.U')?'row-jnu':'row-vasant';}
-function getRowBg(g){return g.includes('ADCHINI')?'#fff8f8':g.includes('IIT')?'#f8fff8':g.includes('J.N.U')?'#f0f7ff':g.includes('VASANT')?'#fdf8ff':'var(--paper-dark)';}
-function shortGrid(g){return g.replace(/33\s*kV\s*/i,'').replace(/66\s*kV\s*/i,'').replace(/ GRID$/i,'').trim();}
+function getRowClass(g){const u=g.toUpperCase();return u.includes('ADCHINI')?'row-adchini':u.includes('IIT')?'row-iit':(u.includes('JNU')||u.includes('J.N.U'))?'row-jnu':'row-vasant';}
+function getRowBg(g){const u=g.toUpperCase();return u.includes('ADCHINI')?'#fff8f8':u.includes('IIT')?'#f8fff8':(u.includes('JNU')||u.includes('J.N.U'))?'#f0f7ff':u.includes('VASANT')?'#fdf8ff':'var(--paper-dark)';}
+function shortGrid(g){return g.replace(/33\s*kV\s*/i,'').replace(/66\s*kV\s*/i,'').replace(/ GRID$/i,'').replace(/B\s*-?\s*BLK$/i,'B').trim();}
 function shortFeeder(f){return f.replace(/^11[kK][vV]\s*(FDR\s*O\/G|FDR|OG)\s*/i,'').replace(/^OG /i,'');}
 function shortFL(n){return n.replace(/^(HTC:|RMU:|DP AT )/i,'');}
 function shortPTR(p){return p.replace('PTR No:','PTR-');}
@@ -11096,6 +11242,10 @@ function renderKPI(rows){
   const totalAmps=[...new Set(rows.map(d=>d.flFullCode))].reduce((s,fc)=>s+flAmps(fc),0);
   const critFeeders=new Set(rows.filter(d=>d.feederCons>1000).map(d=>d.feeder)).size;
   const noDataFLs=rows.filter(d=>getDTs(d.flFullCode).length===0).length;
+  // DT loading stats
+  const allDTLoads=Object.values(DT_LOADING).flat();
+  const overloadedDTs=allDTLoads.filter(d=>d.pct>=100).length;
+  const highDTs=allDTLoads.filter(d=>d.pct>=80&&d.pct<100).length;
   const grids=new Set(rows.map(d=>d.grid)).size;
   const peakLoad=rows.reduce((m,d)=>Math.max(m,d.feederLoadAmp||0),0);
   const mappedCons=[...new Set(rows.map(d=>d.flFullCode))].reduce((s,fc)=>s+getConsumers(fc).length,0);
@@ -11106,6 +11256,8 @@ function renderKPI(rows){
     {label:'FL HT Current',val:totalAmps+' A',sub:'full load amps',color:'var(--warn)',pct:Math.min(100,totalAmps/20)},
     {label:'Critical Feeders',val:critFeeders,sub:'>1000 consumers',color:'var(--fault)',pct:Math.min(100,critFeeders*20)},
     {label:'FLs No DT Data',val:noDataFLs,sub:'missing records',color:'#7c3aed',pct:Math.min(100,noDataFLs*5)},
+    {label:'DTs Overloaded',val:overloadedDTs,sub:'≥100% loading (Apr-Jun)',color:'#b91c1c',pct:Math.min(100,overloadedDTs*5)},
+    {label:'DTs High Load',val:highDTs,sub:'80-100% loading',color:'#d97706',pct:Math.min(100,highDTs*5)},
     {label:'Grid Substations',val:grids,sub:'active grids',color:'var(--accent)',pct:grids*25},
     {label:'Consumers Mapped',val:mappedCons.toLocaleString(),sub:'with CA/meter data',color:'#0891b2',pct:Math.min(100,totalCons?mappedCons/totalCons*100:0)},
   ];
@@ -11210,349 +11362,650 @@ function renderSummary(rows){
 }
 
 /* ══ DT SUBROW ══ */
-function dtSubRowHTML(flfc,colspan){
-  const dts=getDTs(flfc);
-  const cons=getConsumers(flfc);
-  let dtHTML;
-  if(!dts.length){
-    dtHTML=`<div class="no-dt">No DT records.</div>`;
+/* ══ GIS SIDEBAR TOGGLE ══ */
+let gisSidebarOpen=true;
+function toggleGisSidebar(){
+  const wrap=document.getElementById('gisSidebarWrap');
+  const body=document.getElementById('gisSidebarBody');
+  const label=document.getElementById('gisSidebarLabel');
+  const btn=document.getElementById('gisSidebarToggle');
+  gisSidebarOpen=!gisSidebarOpen;
+  if(gisSidebarOpen){
+    wrap.style.width='210px';
+    body.style.display='flex';
+    label.style.display='';
+    btn.textContent='◀';
+    btn.title='Collapse panel';
   }else{
-    const totalR=dts.reduce((s,d)=>s+d.rating,0);
-    const totalA=dts.reduce((s,d)=>s+(isFinite(d.htAmps)&&d.htAmps>0?d.htAmps:0),0);
-    const rows=dts.map((d,i)=>`<tr>
-      <td style="text-align:center;">${i+1}</td>
-      <td style="font-size:0.58rem;color:var(--ink-light);">${d.serial}</td>
-      <td class="dt-rating-val" style="text-align:right;">${d.rating.toLocaleString()}</td>
-      <td style="text-align:right;color:var(--warn);font-weight:600;">${d.htAmps}</td>
-    </tr>`).join('');
-    dtHTML=`<table class="dt-tbl"><thead><tr><th>#</th><th>Serial</th><th style="text-align:right;">kVA</th><th style="text-align:right;">HT (A)</th></tr></thead>
-      <tbody>${rows}<tr class="dt-sum-row"><td colspan="2">Total</td><td style="text-align:right;">${totalR.toLocaleString()} kVA</td><td style="text-align:right;color:var(--warn);">${totalA} A</td></tr></tbody>
-      </table>`;
+    wrap.style.width='28px';
+    body.style.display='none';
+    label.style.display='none';
+    btn.textContent='▶';
+    btn.title='Expand panel';
   }
-  let consHTML='';
-  if(cons.length){
-    const shown=cons.slice(0,25);
-    const rows=shown.map((c,i)=>`<tr>
-      <td style="text-align:center;">${i+1}</td>
-      <td style="font-size:0.58rem;">${mapsLink(c.ca,c.latlong)}</td>
-      <td style="font-size:0.58rem;">${mapsLink(c.meter,c.latlong)}</td>
-      <td style="text-align:left;font-size:0.6rem;">${c.name}</td>
-      <td style="text-align:left;font-size:0.58rem;color:var(--ink-light);">${c.address.substring(0,45)}</td>
-      <td style="font-size:0.58rem;color:var(--ink-light);">${c.dtCode}</td>
-    </tr>`).join('');
-    const more=cons.length>25?`<div style="font-size:0.6rem;color:var(--ink-light);padding:3px 6px;">+ ${cons.length-25} more consumers (use CSV export for full list)</div>`:'';
-    consHTML=`<div style="margin-top:6px;">
-      <table class="dt-tbl"><thead><tr><th>#</th><th>CA No</th><th>Meter No</th><th style="text-align:left;">Consumer</th><th style="text-align:left;">Address</th><th>DT Code</th></tr></thead>
-      <tbody>${rows}</tbody></table>${more}
-      <div style="font-size:0.6rem;color:var(--wire);font-weight:700;padding:3px 6px;">Total consumers mapped: ${cons.length}</div>
-    </div>`;
-  }else{
-    consHTML=`<div class="no-dt">No consumer mapping loaded for this FL. Upload consumer data to see this.</div>`;
-  }
-  return`<tr class="dt-subrow" data-for="${flfc}"><td colspan="${colspan}"><div class="dt-inner">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--wire);margin-bottom:2px;">Distribution Transformers</div>
-    ${dtHTML}
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--wire);margin:6px 0 2px;">Consumers</div>
-    ${consHTML}
-    </div></td></tr>`;
+  setTimeout(()=>{if(gisMap)gisMap.invalidateSize();},250);
 }
 
-/* ══ RENDER TABLE ══ */
-function renderTable(rows){
-  const tbody=document.getElementById('tableBody');
-  tbody.innerHTML='';
-  const groups={};
-  rows.forEach(d=>{const k=`${d.grid}|${d.ptr}|${d.feeder}`;if(!groups[k])groups[k]=[];groups[k].push(d);});
-  let count=0;const COLSPAN=14;
-  Object.values(groups).forEach(grp=>{
-    grp.forEach((row,idx)=>{
-      const dts=getDTs(row.flFullCode);
-      const cons=getConsumers(row.flFullCode);
-      const hasDT=dts.length>0;
-      const hasExpand=hasDT||cons.length>0;
-      const fc=row.feederCons;
-      const amp=flAmps(row.flFullCode);
-      // overload: amps > 150 or feederCons > 1000
-      const isOverload=fc>1000;
-      const dtBtnHTML=`<button class="dt-btn" data-flfc="${row.flFullCode}">${hasDT?`${dts.length}▾`:cons.length?'▾':'—'}</button>`;
-      const alertHTML=isOverload?`<span class="alert-icon" title="Critical load">🔴</span>`:amp>100?`<span class="alert-icon" title="High current">🟡</span>`:'';
-      const tr=document.createElement('tr');
-      tr.className=getRowClass(row.grid)+(isOverload?' overload-row':'');
-      const rowBg=getRowBg(row.grid);
-      if(idx===0){
-        tr.innerHTML=`
-          <td rowspan="${grp.length}" class="fcol" style="left:0;background:${rowBg};"><span class="grid-label">${shortGrid(row.grid)}</span></td>
-          <td rowspan="${grp.length}" class="fcol" style="left:60px;background:${rowBg};"><div class="ptr-text">${shortPTR(row.ptr)}</div></td>
-          <td rowspan="${grp.length}" class="fcol" style="left:115px;background:${rowBg};"><div class="feeder-text">${shortFeeder(row.feeder)}${SLD_MAP[row.feederCode]?` <span onclick="openSLD('${row.feederCode}','${row.feeder.replace(/'/g,"\\'")}')" title="Open SLD" style="cursor:pointer;font-size:0.6rem;font-family:'IBM Plex Mono',monospace;background:var(--wire);color:white;padding:1px 4px;border-radius:2px;vertical-align:middle;user-select:none;">SLD↗</span>`:''}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:0.55rem;color:var(--ink-light);">${row.feederCode}</div></td>
-          <td class="fcol" style="left:245px;background:${rowBg};font-family:'IBM Plex Mono',monospace;font-size:0.55rem;">${row.flCode}</td>
-          <td class="fcol fcol-last" style="left:310px;background:${rowBg};text-align:left;font-size:0.65rem;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${row.flName}">${shortFL(row.flName)}</td>
-          <td><span class="type-badge ${getTypeClass(row.type)}">${getTypeLabel(row.type)}</span></td>
-          <td style="font-family:'IBM Plex Mono',monospace;">${row.cons||'—'}</td>
-          <td rowspan="${grp.length}">${fc?`<span class="ftot-val">${fc.toLocaleString()}</span>`:'—'}</td>
-          <td class="dt-trigger" data-flfc="${row.flFullCode}" style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;${hasExpand?'cursor:pointer;color:var(--wire-bright);font-weight:700;text-decoration:underline;text-underline-offset:2px;':''}">${row.dts||'—'}</td>
-          <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;">${row.rating||'—'}</td>
-          <td><span class="load-badge ${getLoadClass(fc||0)}">${getLoadLabel(fc||0)}</span></td>
-          <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:700;color:var(--warn);">${amp||'—'}</td>
-          <td>${alertHTML}</td>
-          <td>${dtBtnHTML}</td>`;
-      } else {
-        tr.innerHTML=`
-          <td class="fcol" style="left:0;background:${rowBg};font-family:'IBM Plex Mono',monospace;font-size:0.62rem;">${row.flCode}</td>
-          <td class="fcol fcol-last" style="left:65px;background:${rowBg};text-align:left;font-size:0.65rem;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${row.flName}">${shortFL(row.flName)}</td>
-          <td><span class="type-badge ${getTypeClass(row.type)}">${getTypeLabel(row.type)}</span></td>
-          <td style="font-family:'IBM Plex Mono',monospace;">${row.cons||'—'}</td>
-          <td class="dt-trigger" data-flfc="${row.flFullCode}" style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;${hasExpand?'cursor:pointer;color:var(--wire-bright);font-weight:700;text-decoration:underline;text-underline-offset:2px;':''}">${row.dts||'—'}</td>
-          <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;">${row.rating||'—'}</td>
-          <td><span class="load-badge ${getLoadClass(fc||0)}">${getLoadLabel(fc||0)}</span></td>
-          <td style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:700;color:var(--warn);">${amp||'—'}</td>
-          <td>${alertHTML}</td>
-          <td>${dtBtnHTML}</td>`;
+/* ══ GIS VIEW ══ */
+let gisMap=null,gisInitialized=false;
+let gisAllGroup=null,gisSelectedGroup=null,gisGridMarkers=null;
+let gisFeeders={},gisFlGPS={};
+const GIS_COLORS=['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899','#06b6d4','#84cc16','#f59e0b','#14b8a6','#a855f7'];
+
+/* ══ AUTHORITATIVE FL GPS (surveyed) ══ */
+const FL_GPS={
+'1S-DL-RP-STC-DHKS-1651-HKS006':[28.5400672525,77.1880360083],
+'1S-DL-RP-STC-DHKS-1651-HKS007':[28.5407058115,77.188744987],
+'1S-DL-RP-STC-DHKS-1651-HKS041':[28.537970664,77.1888755589],
+'1S-DL-RP-STC-DHKS-1651-HKS248':[28.5373912717,77.1905467628],
+'1S-DL-RP-STC-DHKS-1651-HKS043':[28.538240607,77.1912815939],
+'1S-DL-RP-STC-DHKS-1651-HKS223':[28.5416377668,77.1875289039],
+'1S-DL-RP-STC-DHKS-1651-HKS215':[28.5396166096,77.1835602049],
+'1S-DL-RP-STC-DHKS-1651-HKS057':[28.5394511736,77.1839149717],
+'1S-DL-RP-STC-DHKS-1651-HKS272':[28.5365714021,77.1962619069],
+'1S-DL-RP-STC-DHKS-1651-HKS319':[28.5371978124,77.1883718469],
+'1S-DL-RP-STC-DHKS-1651-HKS012':[28.5368118683,77.1867886965],
+'1S-DL-RP-STC-DHKS-1651-HKS020':[28.5356671437,77.1948861522],
+'1S-DL-RP-STC-DHKS-1651-HKS236':[28.5385683416,77.1837192532],
+'1S-DL-RP-STC-DHKS-1651-HKS285':[28.5370104449,77.1845503526],
+'1S-DL-RP-STC-DHKS-1651-HKS267':[28.5366834634,77.1888164383],
+'1S-DL-RP-STC-DHKS-1651-HKS011':[28.5378181702,77.1857414739],
+'1S-DL-RP-STC-DHKS-1651-HKS309':[28.5363951887,77.1904340581],
+'1S-DL-RP-STC-DHKS-1651-HKS021':[28.5363571701,77.1905607159],
+'1S-DL-RP-STC-DHKS-1651-HKS040':[28.5450661311,77.1895799402],
+'1S-DL-RP-STC-DHKS-1651-HKS016':[28.5431409817,77.1997093365],
+'1S-DL-RP-STC-DHKS-1651-HKS017':[28.5417853114,77.1969002816],
+'1S-DL-RP-STC-DHKS-1651-HKS004':[28.5421853663,77.1803778573],
+'1S-DL-RP-STC-DHKS-1651-HKS032':[28.5426741707,77.1794778569],
+'1S-DL-RP-STC-DHKS-1651-HKS238':[28.5375898739,77.1843568879],
+'1S-DL-RP-STC-DHKS-1651-HKS045':[28.5392086379,77.1742735176],
+'1S-DL-RP-STC-DHKS-1651-HKS063':[28.5317694741,77.1700194625],
+'1S-DL-RP-STC-DHKS-1651-HKS010':[28.5393965822,77.1808974119],
+'1S-DL-RP-STC-DHKS-1651-HKS241':[28.538020436,77.1813302909],
+'1S-DL-RP-STC-DHKS-1651-HKS061':[28.5388655214,77.1813770513],
+'1S-DL-RP-STC-DHKS-1651-HKS060':[28.5385474971,77.1814678751],
+'1S-DL-RP-STC-DHKS-1651-HKS245':[28.5401657094,77.1834989505],
+'1S-DL-RP-STC-DHKS-1651-HKS070':[28.537868653,77.1802846793],
+'1S-DL-RP-STC-DHKS-1651-HKS262':[28.5384146178,77.182419256],
+'1S-DL-RP-STC-DHKS-1651-HKS044':[28.5406497117,77.1815244402],
+'1S-DL-RP-STC-DHKS-1651-HKS240':[28.5373116635,77.1807656475],
+'1S-DL-RP-STC-DHKS-1651-HKS050':[28.5384305247,77.1820726026],
+'1S-DL-RP-STC-DHKS-1651-HKS053':[28.5388729024,77.1857662042],
+'1S-DL-RP-STC-DHKS-1651-HKS235':[28.5383319574,77.1817794463],
+'1S-DL-RP-STC-DHKS-1651-HKS239':[28.5385013737,77.1839225298],
+'1S-DL-RP-STC-DHKS-1651-HKS054':[28.5374288011,77.1834249706],
+'1S-DL-RP-STC-DHKS-1651-HKS019':[28.5367299631,77.1845761143],
+'1S-DL-RP-STC-DHKS-1651-HKS237':[28.5428371957,77.1837546334],
+'1S-DL-RP-STC-DHKS-1651-HKS005':[28.5409302909,77.1848440653],
+'1S-DL-RP-STC-DHKS-1651-HKS001':[28.5411409866,77.1868905119],
+'1S-DL-RP-STC-DHKS-1651-HKS056':[28.5405271809,77.1838182304],
+'1S-DL-RP-STC-DHKS-1651-HKS244':[28.5422924506,77.1837456121],
+'1S-DL-RP-STC-DHKS-1651-HKS033':[28.5414339454,77.1787631702],
+'1S-DL-RP-STC-DHKS-1651-HKS243':[28.541910152,77.1781867141],
+'1S-DL-RP-STC-DHKS-1651-HKS048':[28.5499742191,77.183231318],
+'1S-DL-RP-STC-DHKS-1651-HKS018':[28.549012541,77.181091423],
+'1S-DL-RP-STC-DHKS-1651-HKS013':[28.5475775017,77.1899706077],
+'1S-DL-RP-STC-DHKS-1651-HKS003':[28.5475297855,77.180631652],
+'1S-DL-RP-STC-DHKS-1651-HKS326':[28.5439694876,77.18544633],
+'1S-DL-RP-STC-DHKS-1651-HKS293':[28.5441289919,77.1839460952],
+'1S-DL-RP-STC-DHKS-1651-HKS143':[28.5451139795,77.1808766452],
+'1S-DL-RP-STC-DHKS-1651-HKS321':[28.5425593833,77.1921430352],
+'1S-DL-RP-STC-DHKS-1651-HKS038':[28.5379920168,77.1953528412],
+'1S-DL-RP-STC-DHKS-1651-HKS247':[28.5387607197,77.192248347],
+'1S-DL-RP-STC-DHKS-1651-HKS037':[28.5397209024,77.1935591896],
+'1S-DL-RP-STC-DHKS-1651-HKS002':[28.5402012621,77.1897789213],
+'1S-DL-RP-STC-DHKS-1651-HKS242':[28.5451072731,77.1894816109],
+'1S-DL-RP-STC-DHKS-1651-HKS008':[28.5452739796,77.1807606705],
+'1S-DL-RP-STC-DHKS-1651-HKS009':[28.5465458777,77.1787558977],
+'1S-DL-RP-STC-DHKS-1651-HKS039':[28.5467098733,77.178648843],
+'1S-DL-RP-STC-DHKS-1651-HKS046':[28.5410350287,77.1745042193],
+'1S-DL-RP-STC-DHKS-1651-HKS034':[28.5487823568,77.1673353086],
+'1S-DL-RP-STC-DHKS-1651-HKS313':[28.5301917032,77.1707300367],
+'1S-DL-RP-STC-DHKS-1651-HKS292':[28.5312838327,77.1714043158],
+'1S-DL-RP-STC-DHKS-1651-HKS288':[28.5431900058,77.178977345],
+'1S-DL-RP-STC-DHKS-1651-HKS058':[28.5404131345,77.1839846466],
+'1S-DL-RP-STC-DHKS-1651-HKS047':[28.5270856173,77.1679511186],
+'1S-DL-RP-STC-DHKS-1651-HKS246':[28.5309474148,77.1678743463],
+'1S-DL-RP-STC-DHKS-1651-HKS064':[28.5291819649,77.1671161267]
+};
+
+/* ══ GRID SUBSTATION GPS ══ */
+const GRID_GPS={
+  '33kV IIT GRID':[28.54387832,77.18524809],
+  '33kV ADCHINI GRID':[28.53614286,77.19831691],
+  '66kV JNU GRID':[28.54682207,77.16231748],
+  '66kV VASANT KUNJ B GRID':[28.52565722,77.16694201]
+};
+function getGridGPS(grid){
+  const g=grid.toUpperCase();
+  if(g.includes('IIT'))return GRID_GPS['33kV IIT GRID'];
+  if(g.includes('ADCHINI'))return GRID_GPS['33kV ADCHINI GRID'];
+  if(g.includes('JNU')||g.includes('J.N.U'))return GRID_GPS['66kV JNU GRID'];
+  if(g.includes('VASANT'))return GRID_GPS['66kV VASANT KUNJ B GRID'];
+  return null;
+}
+
+function buildFlGPS(){
+  const r={};
+  // Priority 1: authoritative surveyed GPS
+  Object.entries(FL_GPS).forEach(([fc,gps])=>{ r[fc]=gps; });
+  // Priority 2: consumer centroid for FLs not in FL_GPS
+  Object.entries(consumerLookup).forEach(([flfc,consumers])=>{
+    if(r[flfc])return; // already have surveyed GPS
+    const pts=consumers.map(c=>{
+      const m=String(c.latlong||'').match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);
+      return m?[parseFloat(m[1]),parseFloat(m[2])]:null;
+    }).filter(p=>p&&!isNaN(p[0])&&!isNaN(p[1])&&p[0]>20&&p[0]<35&&p[1]>70&&p[1]<80);
+    if(pts.length){
+      r[flfc]=[pts.reduce((s,p)=>s+p[0],0)/pts.length, pts.reduce((s,p)=>s+p[1],0)/pts.length];
+    }
+  });
+  return r;
+}
+
+function initGisMap(){
+  if(gisInitialized)return;
+  gisInitialized=true;
+  gisMap=L.map('gisMap',{zoomControl:true}).setView([28.545,77.193],14);
+  const gmRoad=L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{subdomains:'0123',maxZoom:20,attribution:'© Google Maps'});
+  const gmSat=L.tileLayer('https://mt{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{subdomains:'0123',maxZoom:20,attribution:'© Google Maps'});
+  const gmHybrid=L.tileLayer('https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{subdomains:'0123',maxZoom:20,attribution:'© Google Maps'});
+  gmRoad.addTo(gisMap);
+  L.control.layers({'🗺 Road Map':gmRoad,'🛰 Satellite':gmSat,'🛰 Hybrid':gmHybrid},{},{position:'topright',collapsed:false}).addTo(gisMap);
+  setTimeout(()=>{gisMap.invalidateSize();buildGisData();},250);
+}
+
+function buildGisData(){
+  gisFlGPS=buildFlGPS();
+  gisFeeders={};
+  let ci=0;
+  const feederMap={};
+  activeData.forEach(row=>{
+    // Normalize grid name — merge all IIT variants
+    const grid=row.grid.replace(/33\s*kV\s*I\.I\.T\.?\s*GRID/i,'33kV IIT GRID')
+                       .replace(/66\s*kV\s*J\.N\.U\.?\s*GRID/i,'66kV JNU GRID')
+                       .replace(/66\s*kV\s*VASANT KUNJ B\s*-\s*BLK\s*GRID/i,'66kV VASANT KUNJ B GRID');
+    const k=row.feederCode||row.feeder;
+    if(!feederMap[k])feederMap[k]={code:row.feederCode,name:row.feeder,grid,ptr:row.ptr,fls:[],color:GIS_COLORS[ci++%GIS_COLORS.length]};
+    const gps=gisFlGPS[row.flFullCode];
+    feederMap[k].fls.push({...row,grid,gps:gps||null,approxGps:false});
+  });
+
+  // For FLs with no GPS (mostly HTC), approximate from feeder's known FL centroid
+  Object.values(feederMap).forEach(f=>{
+    const known=f.fls.filter(fl=>fl.gps);
+    if(!known.length)return;
+    const centLat=known.reduce((s,fl)=>s+fl.gps[0],0)/known.length;
+    const centLng=known.reduce((s,fl)=>s+fl.gps[1],0)/known.length;
+    f.fls.forEach((fl,i)=>{
+      if(!fl.gps){
+        // Spread unknown FLs in a small circle around feeder centroid
+        const angle=(2*Math.PI*i)/f.fls.length;
+        const offset=0.0006; // ~60m radius
+        fl.gps=[centLat+Math.sin(angle)*offset, centLng+Math.cos(angle)*offset];
+        fl.approxGps=true;
       }
-      tbody.appendChild(tr);
-      tbody.insertAdjacentHTML('beforeend',dtSubRowHTML(row.flFullCode,COLSPAN));
-      count++;
     });
   });
-  document.getElementById('recordCount').textContent=`${count} records`;
 
-  // DT trigger
-  tbody.querySelectorAll('.dt-trigger').forEach(cell=>{
-    cell.addEventListener('click',()=>{
-      const flfc=cell.dataset.flfc;
-      if(!getDTs(flfc).length&&!getConsumers(flfc).length)return;
-      toggleDT(cell.closest('tr'),flfc);
-    });
+  gisFeeders=feederMap;
+  buildGisSidebar();
+  renderGisOverview();
+}
+
+function buildGisSidebar(){
+  const list=document.getElementById('gisFeederList');
+  const byGrid={};
+  Object.values(gisFeeders).forEach(f=>{
+    if(!byGrid[f.grid])byGrid[f.grid]=[];
+    byGrid[f.grid].push(f);
   });
-  tbody.querySelectorAll('.dt-btn').forEach(btn=>{
-    btn.addEventListener('click',e=>{
-      e.stopPropagation();
-      toggleDT(btn.closest('tr'),btn.dataset.flfc);
+  list.innerHTML=Object.entries(byGrid).map(([grid,fdrList])=>`
+    <div style="padding:0.2rem 0.55rem;font-family:'IBM Plex Mono',monospace;font-size:0.52rem;color:var(--wire-bright);text-transform:uppercase;letter-spacing:0.07em;background:var(--paper-darker);position:sticky;top:0;z-index:2;">${shortGrid(grid)}</div>
+    ${fdrList.map(f=>{
+      const hasgps=f.fls.filter(fl=>fl.gps).length;
+      return `<div class="gis-fi" data-fc="${f.code}" onclick="selectGisFeeder('${f.code}')"
+        style="padding:0.3rem 0.6rem 0.3rem 0.75rem;font-size:0.6rem;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.05);border-left:3px solid ${f.color};line-height:1.4;display:flex;align-items:center;gap:0.3rem;">
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${f.name}">${shortFeeder(f.name).substring(0,24)}</span>
+        <span style="font-size:0.52rem;color:var(--ink-light);flex-shrink:0;">${hasgps}FL</span>
+      </div>`;
+    }).join('')}
+  `).join('');
+
+  // Feeder search
+  document.getElementById('gisFeederSearch').addEventListener('input',function(){
+    const q=this.value.trim().toLowerCase();
+    document.querySelectorAll('.gis-fi').forEach(el=>{
+      el.style.display=(!q||el.title&&el.title.toLowerCase().includes(q)||el.textContent.toLowerCase().includes(q))?'flex':'none';
     });
   });
 }
 
-function toggleDT(parentRow,flfc){
-  let next=parentRow.nextElementSibling;
-  while(next&&!next.classList.contains('dt-subrow'))next=next.nextElementSibling;
-  if(!next)return;
-  const visible=next.classList.toggle('visible');
-  const btn=parentRow.querySelector('.dt-btn');
-  const n=getDTs(flfc).length;
-  const hasCons=getConsumers(flfc).length>0;
-  if(btn)btn.textContent=visible?(n?`${n}▴`:'▴'):(n?`${n}▾`:hasCons?'▾':'—');
-  if(btn)btn.classList.toggle('expanded',visible);
+function renderGisOverview(){
+  if(gisAllGroup)gisMap.removeLayer(gisAllGroup);
+  gisAllGroup=L.layerGroup();
+  const bounds=[];
+  Object.values(gisFeeders).forEach(f=>{
+    const hasgps=f.fls.filter(fl=>fl.gps);
+    if(!hasgps.length)return;
+    const gridGPS=getGridGPS(f.grid);
+    const centLat=gridGPS?gridGPS[0]:hasgps.reduce((s,fl)=>s+fl.gps[0],0)/hasgps.length;
+    const centLng=gridGPS?gridGPS[1]:hasgps.reduce((s,fl)=>s+fl.gps[1],0)/hasgps.length;
+    hasgps.forEach(fl=>{
+      L.polyline([[centLat,centLng],fl.gps],{color:f.color,weight:3,opacity:0.82,lineJoin:'round',lineCap:'round'}).addTo(gisAllGroup);
+      bounds.push(fl.gps);
+      L.circleMarker(fl.gps,{radius:4,fillColor:fl.approxGps?'#7c3aed':f.color,color:'white',weight:1,fillOpacity:fl.approxGps?0.6:0.8,className:''})
+       .bindPopup(`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;"><b>${fl.flName||fl.flCode}</b><br><span style="color:#5a6580;">${shortFeeder(f.name)}</span><br>DTs: ${getDTs(fl.flFullCode).length} · Cons: ${fl.cons||0}${fl.approxGps?' <span style="color:#7c3aed;">~approx</span>':''}</div>`)
+       .addTo(gisAllGroup);
+    });
+  });
+  // Grid substation markers on overview
+  Object.entries(GRID_GPS).forEach(([gridName,gps])=>{
+    const sIcon=L.divIcon({className:'',iconSize:[34,40],iconAnchor:[17,40],popupAnchor:[0,-40],
+      html:`<div style="text-align:center;">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="34" height="34" rx="4" fill="#1e40af" stroke="white" stroke-width="2.5"/>
+          <rect x="7" y="22" width="22" height="4" rx="1" fill="white" opacity="0.95"/>
+          <rect x="10" y="12" width="3" height="10" fill="white" opacity="0.95"/>
+          <rect x="23" y="12" width="3" height="10" fill="white" opacity="0.95"/>
+          <path d="M18 6 L10 12 L26 12 Z" fill="white" opacity="0.95"/>
+          <rect x="10" y="26" width="3" height="5" fill="white" opacity="0.7"/>
+          <rect x="23" y="26" width="3" height="5" fill="white" opacity="0.7"/>
+        </svg>
+        <div style="background:#1e40af;color:white;font-family:'IBM Plex Mono',monospace;font-size:7px;padding:1px 4px;border-radius:2px;margin-top:1px;white-space:nowrap;border:1px solid white;font-weight:700;">${shortGrid(gridName)}</div>
+      </div>`});
+    L.marker(gps,{icon:sIcon,zIndexOffset:2000})
+     .bindPopup(`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;"><b>${gridName}</b><br>Grid Substation</div>`)
+     .addTo(gisAllGroup);
+  });
+  gisAllGroup.addTo(gisMap);
+  if(bounds.length)gisMap.fitBounds(L.latLngBounds(bounds),{padding:[30,30],maxZoom:16});
+  document.getElementById('gisInfoBox').textContent=`${Object.keys(gisFeeders).length} feeders · Click any feeder to focus`;
+}
+
+function selectGisFeeder(feederCode){
+  if(!gisMap||!gisFeeders[feederCode])return;
+  const f=gisFeeders[feederCode];
+  // Sidebar highlight
+  document.querySelectorAll('.gis-fi').forEach(el=>{
+    const active=el.dataset.fc===feederCode;
+    el.style.background=active?f.color:'';
+    el.style.color=active?'white':'';
+    el.style.fontWeight=active?'700':'';
+  });
+  // Fade overview
+  if(gisAllGroup)gisAllGroup.eachLayer(l=>{if(l.setStyle)l.setStyle({opacity:0.08,fillOpacity:0.06});});
+  // Remove previous selection
+  if(gisSelectedGroup)gisMap.removeLayer(gisSelectedGroup);
+  const grp=L.layerGroup();
+  const bounds=[];
+  const hasgps=f.fls.filter(fl=>fl.gps);
+  if(!hasgps.length){
+    document.getElementById('gisInfoBox').innerHTML='<span style="color:var(--fault);">No GPS data available for this feeder\'s FLs</span>';
+    return;
+  }
+  // Use actual grid GPS if available, else fall back to FL centroid
+  const gridGPS=getGridGPS(f.grid);
+  const centLat=gridGPS?gridGPS[0]:hasgps.reduce((s,fl)=>s+fl.gps[0],0)/hasgps.length;
+  const centLng=gridGPS?gridGPS[1]:hasgps.reduce((s,fl)=>s+fl.gps[1],0)/hasgps.length;
+  bounds.push([centLat,centLng]);
+  // Substation icon for PTR/Grid
+  const ssIcon=L.divIcon({className:'',iconSize:[36,42],iconAnchor:[18,42],popupAnchor:[0,-42],
+    html:`<div style="text-align:center;">
+      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="34" height="34" rx="4" fill="#1e40af" stroke="white" stroke-width="2"/>
+        <rect x="7" y="22" width="22" height="4" rx="1" fill="white" opacity="0.9"/>
+        <rect x="10" y="12" width="3" height="10" fill="white" opacity="0.9"/>
+        <rect x="23" y="12" width="3" height="10" fill="white" opacity="0.9"/>
+        <path d="M18 6 L10 12 L26 12 Z" fill="white" opacity="0.9"/>
+        <rect x="10" y="26" width="3" height="5" fill="white" opacity="0.7"/>
+        <rect x="23" y="26" width="3" height="5" fill="white" opacity="0.7"/>
+      </svg>
+      <div style="background:#1e40af;color:white;font-family:'IBM Plex Mono',monospace;font-size:8px;padding:1px 4px;border-radius:2px;margin-top:1px;white-space:nowrap;border:1px solid white;">${f.ptr}</div>
+    </div>`});
+
+  L.marker([centLat,centLng],{icon:ssIcon,zIndexOffset:1000})
+   .bindPopup(`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;"><b>${f.grid}</b><br>PTR: ${f.ptr}<br>Feeder: ${shortFeeder(f.name)}<br>FLs with GPS: ${hasgps.length}</div>`)
+   .addTo(grp);
+
+  // DT transformer icon factory — approx=true for HTC with estimated position
+  function dtIcon(label, approx){
+    const bg=approx?'#7c3aed':'#d97706'; // purple for HTC approximate, orange for exact
+    const border=approx?'border:2px dashed white;':'border:2px solid white;';
+    return L.divIcon({className:'',iconSize:[30,36],iconAnchor:[15,36],popupAnchor:[0,-36],
+      html:`<div style="text-align:center;">
+        <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="28" height="28" rx="4" fill="${bg}" stroke="white" stroke-width="2" stroke-dasharray="${approx?'4,2':'none'}"/>
+          <circle cx="11" cy="15" r="6" fill="none" stroke="white" stroke-width="2"/>
+          <circle cx="19" cy="15" r="6" fill="none" stroke="white" stroke-width="2"/>
+          <line x1="15" y1="9" x2="15" y2="21" stroke="white" stroke-width="1" opacity="0.6"/>
+          ${approx?'<text x="15" y="8" text-anchor="middle" font-size="7" fill="white" font-weight="bold">~</text>':''}
+        </svg>
+        <div style="background:${bg};color:white;font-family:\'IBM Plex Mono\',monospace;font-size:7px;padding:1px 3px;border-radius:2px;margin-top:1px;white-space:nowrap;${border}max-width:60px;overflow:hidden;text-overflow:ellipsis;">${label}</div>
+      </div>`});
+  }
+
+  // FL markers + routes (no consumers by default)
+  let totalCons=0;
+  const consumersByFL={};
+  hasgps.forEach(fl=>{
+    bounds.push(fl.gps);
+    // Dark shadow line beneath route for depth
+    L.polyline([[centLat,centLng],fl.gps],{color:'#000000',weight:8,opacity:0.25,lineCap:'round',lineJoin:'round'}).addTo(grp);
+    L.polyline([[centLat,centLng],fl.gps],{color:f.color,weight:5,opacity:1,dashArray:'10,5',lineJoin:'round',lineCap:'round'}).addTo(grp);
+    const dtCount=getDTs(fl.flFullCode).length;
+    const consArr=getConsumers(fl.flFullCode);
+    totalCons+=consArr.length;
+    consumersByFL[fl.flFullCode]=consArr;
+    L.marker(fl.gps,{icon:dtIcon(fl.flCode, fl.approxGps),zIndexOffset:500})
+     .bindPopup(`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;min-width:190px;">
+       <b style="color:var(--wire);">${fl.flName||fl.flCode}</b><br>
+       FL Code: ${fl.flCode}<br>
+       Type: ${fl.type||'—'} · DTs: ${dtCount}<br>
+       Consumers: ${consArr.length}
+       ${fl.approxGps?'<br><span style="color:#7c3aed;font-size:0.6rem;">~ Approximate location (HTC — no consumer GPS)</span>':''}
+     </div>`)
+     .addTo(grp);
+  });
+
+  // Consumer layer — off by default, toggled by button
+  let consLayer=null;
+  let consVisible=false;
+  function toggleGisConsumers(){
+    if(consVisible){
+      if(consLayer)grp.removeLayer(consLayer);
+      consVisible=false;
+      document.getElementById('gisConsBtn').textContent='👥 Show Consumers';
+    }else{
+      consLayer=L.layerGroup();
+      hasgps.forEach(fl=>{
+        (consumersByFL[fl.flFullCode]||[]).forEach(c=>{
+          const m=String(c.latlong||'').match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);
+          if(!m)return;
+          const lat=parseFloat(m[1]),lng=parseFloat(m[2]);
+          if(isNaN(lat)||isNaN(lng)||lat<20||lat>35)return;
+          L.circleMarker([lat,lng],{radius:3,fillColor:'#16a34a',color:'#16a34a',weight:0,fillOpacity:0.75})
+           .bindPopup(`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;"><b>${c.name}</b><br>CA: ${c.ca} · Meter: ${c.meter}<br>DT: ${c.dtCode}</div>`)
+           .addTo(consLayer);
+        });
+      });
+      consLayer.addTo(grp);
+      consVisible=true;
+      document.getElementById('gisConsBtn').textContent='👥 Hide Consumers';
+    }
+  }
+  window._toggleGisConsumers=toggleGisConsumers;
+  gisSelectedGroup=grp;
+  grp.addTo(gisMap);
+  gisMap.fitBounds(L.latLngBounds(bounds),{padding:[50,50],maxZoom:17});
+  const topbar=document.getElementById('gisTopBar');
+  topbar.style.display='block';
+  topbar.innerHTML=`<span style="color:${f.color};font-weight:700;">▊</span> ${shortFeeder(f.name)} &nbsp;·&nbsp; ${f.grid} &nbsp;·&nbsp; ${f.ptr} &nbsp;·&nbsp; ${hasgps.length} FLs &nbsp;·&nbsp; ${totalCons.toLocaleString()} consumers
+    <button id="gisConsBtn" onclick="window._toggleGisConsumers&&window._toggleGisConsumers()" style="margin-left:0.75rem;font-family:'IBM Plex Mono',monospace;font-size:0.58rem;padding:2px 8px;background:var(--live);color:white;border:none;border-radius:3px;cursor:pointer;">👥 Show Consumers</button>`;
+  document.getElementById('gisInfoBox').innerHTML=`<b>${shortFeeder(f.name)}</b><br>${hasgps.length} FLs · ${totalCons} consumers`;
+  document.getElementById('gisResetBtn').style.display='inline-block';
+}
+
+function resetGis(){
+  if(gisSelectedGroup){gisMap.removeLayer(gisSelectedGroup);gisSelectedGroup=null;}
+  if(gisAllGroup)gisAllGroup.eachLayer(l=>{if(l.setStyle)l.setStyle({opacity:0.45,fillOpacity:0.8});});
+  document.querySelectorAll('.gis-fi').forEach(el=>{el.style.background='';el.style.color='';el.style.fontWeight='';});
+  document.getElementById('gisResetBtn').style.display='none';
+  document.getElementById('gisTopBar').style.display='none';
+  document.getElementById('gisInfoBox').textContent=`${Object.keys(gisFeeders).length} feeders · Click any feeder to focus`;
+  const bounds=[];
+  Object.values(gisFeeders).forEach(f=>f.fls.filter(fl=>fl.gps).forEach(fl=>bounds.push(fl.gps)));
+  if(bounds.length)gisMap.fitBounds(L.latLngBounds(bounds),{padding:[30,30],maxZoom:16});
 }
 
 /* ══ FILTERS ══ */
-function populateFilters(data){
-  const grids=[...new Set(data.map(d=>d.grid))];
-  const feeders=[...new Set(data.map(d=>d.feeder))];
-  const fls=[...new Set(data.map(d=>d.flName))].sort();
-  document.getElementById('gridFilter').innerHTML='<option value="">All Grids</option>'+grids.map(g=>`<option value="${g}">${shortGrid(g)}</option>`).join('');
-  document.getElementById('feederFilter').innerHTML='<option value="">All Feeders</option>'+feeders.map(f=>`<option value="${f}">${shortFeeder(f).substring(0,30)}</option>`).join('');
-  document.getElementById('flFilter').innerHTML='<option value="">All FLs</option>'+fls.map(f=>`<option value="${f}">${shortFL(f).substring(0,30)}</option>`).join('');
+function renderTable(rows){
+  const container=document.getElementById('networkView');
+  container.innerHTML='';
+  let count=0;
+  const hierarchy={};
+  rows.forEach(row=>{
+    const g=row.grid,p=row.ptr,fk=row.feederCode;
+    if(!hierarchy[g])hierarchy[g]={};
+    if(!hierarchy[g][p])hierarchy[g][p]={};
+    if(!hierarchy[g][p][fk])hierarchy[g][p][fk]={feeder:row.feeder,feederCode:row.feederCode,fls:[]};
+    hierarchy[g][p][fk].fls.push(row);
+    count++;
+  });
+  const GRID_COLORS={'33kV IIT GRID':'#1e40af','33kV ADCHINI GRID':'#b91c1c','66kV JNU GRID':'#065f46','66kV VASANT KUNJ B GRID':'#6d28d9'};
+  Object.entries(hierarchy).forEach(([grid,ptrs])=>{
+    const gridColor=Object.entries(GRID_COLORS).find(([k])=>grid.includes(k.replace('33kV ','').replace('66kV ','')))?.[1]||'#1e40af';
+    const allFls=Object.values(ptrs).flatMap(p=>Object.values(p)).flatMap(f=>f.fls);
+    const totalCons=allFls.reduce((s,r)=>s+r.cons,0);
+    const gridDiv=document.createElement('div');
+    gridDiv.className='nv-grid';
+    const gridHdr=document.createElement('div');
+    gridHdr.className='nv-grid-hdr';
+    gridHdr.style.background=gridColor;
+    gridHdr.innerHTML=`<span class="nv-toggle-icon open" style="transition:transform 0.15s;display:inline-block;width:12px;">▶</span>
+      <span class="nv-grid-title">⚡ ${grid}</span>
+      <span class="nv-grid-stats">${allFls.length} FLs · ${totalCons.toLocaleString()} consumers</span>`;
+    gridDiv.appendChild(gridHdr);
+    const gridBody=document.createElement('div');
+    Object.entries(ptrs).forEach(([ptr,feeders])=>{
+      const ptrDiv=document.createElement('div');
+      ptrDiv.className='nv-ptr';
+      ptrDiv.style.cssText=`background:${gridColor}22;color:${gridColor};`;
+      ptrDiv.textContent=`▪ ${ptr}`;
+      gridBody.appendChild(ptrDiv);
+      Object.entries(feeders).forEach(([fcode,fdata])=>{
+        const fl0=fdata.fls[0];
+        const fdrLoad=getFeederLoading(fcode);
+        const fdrBadge=fdrLoad?`<span style="background:${loadingColor(fdrLoad.peakMW/2.5)};color:white;padding:1px 4px;border-radius:2px;font-size:0.55rem;" title="${fdrLoad.peakDate}">${fdrLoad.peakMW}A</span>`:'';
+        const sldBtn=SLD_MAP[fcode]?`<button onclick="event.stopPropagation();openSLD('${fcode}','${fdata.feeder.replace(/'/g,"\\'")}\')" style="font-size:0.55rem;padding:1px 5px;background:var(--wire);color:white;border:none;border-radius:2px;cursor:pointer;">SLD↗</button>`:'';
+        const feederDiv=document.createElement('div');
+        feederDiv.className='nv-feeder';
+        const feederHdr=document.createElement('div');
+        feederHdr.className='nv-feeder-hdr';
+        feederHdr.innerHTML=`<span class="nv-toggle-icon" style="color:${gridColor};transition:transform 0.15s;display:inline-block;width:12px;transform:rotate(90deg);">▶</span>
+          <span class="nv-feeder-name" title="${fdata.feeder}">${shortFeeder(fdata.feeder)}</span>
+          <span class="nv-feeder-meta">${fdrBadge}${sldBtn}
+            <span style="color:var(--ink-light);font-size:0.58rem;">${fdata.fls.length}FL</span>
+          </span>`;
+        feederDiv.appendChild(feederHdr);
+        const flBody=document.createElement('div');
+        const table=document.createElement('table');
+        table.className='nv-fl-table';
+        table.innerHTML=`<thead><tr><th>FL Code</th><th>FL Name</th><th>Type</th><th>Cons</th><th>DTs</th><th>kVA</th><th>Curr(A)</th><th>Load</th><th>⚠</th><th>▾</th></tr></thead>`;
+        const tbody=document.createElement('tbody');
+        fdata.fls.forEach(row=>{
+          const dts=getDTs(row.flFullCode);
+          const cons=getConsumers(row.flFullCode);
+          const hasDT=dts.length>0,hasExpand=hasDT||cons.length>0;
+          const amp=flAmps(row.flFullCode);
+          const isOverload=row.feederCons>1000;
+          const dtLoads=getDTLoading(row.flFullCode);
+          const worstDT=dtLoads.length?dtLoads.reduce((m,d)=>d.pct>m.pct?d:m,dtLoads[0]):null;
+          const dtBadge=worstDT?`<br><span style="font-size:0.5rem;">${loadingBadge(worstDT.pct,worstDT.range)}</span>`:'';
+          const tr=document.createElement('tr');
+          if(isOverload)tr.classList.add('nv-overload');
+          tr.innerHTML=`<td style="font-size:0.58rem;color:var(--wire);">${row.flCode}</td>
+            <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${row.flName}">${shortFL(row.flName)}</td>
+            <td><span class="type-badge ${getTypeClass(row.type)}">${getTypeLabel(row.type)}</span></td>
+            <td>${row.cons||'—'}</td>
+            <td>${hasDT?dts.length:'—'}${dtBadge}</td>
+            <td>${row.rating||'—'}</td>
+            <td style="color:var(--warn);font-weight:600;">${amp||'—'}</td>
+            <td><span class="load-badge ${getLoadClass(row.feederCons||0)}">${getLoadLabel(row.feederCons||0)}</span></td>
+            <td>${isOverload?'🔴':amp>100?'🟡':''}</td>
+            <td><button class="dt-btn" style="display:${hasExpand?'inline-block':'none'};" data-flfc="${row.flFullCode}">${hasDT?dts.length+'▾':'▾'}</button></td>`;
+          tbody.appendChild(tr);
+          const expTr=document.createElement('tr');
+          expTr.className='nv-expand-row';
+          expTr.style.display='none';
+          const expTd=document.createElement('td');
+          expTd.colSpan=10;
+          const expId=`exp-${row.flFullCode.replace(/[^a-z0-9]/gi,'-')}`;
+          expTd.innerHTML=`<div class="dt-inner" id="${expId}"></div>`;
+          expTr.appendChild(expTd);
+          tbody.appendChild(expTr);
+          const btn=tr.querySelector('.dt-btn');
+          if(btn){
+            btn.addEventListener('click',e=>{
+              e.stopPropagation();
+              const open=expTr.style.display!=='none';
+              expTr.style.display=open?'none':'table-row';
+              btn.textContent=open?(hasDT?dts.length+'▾':'▾'):(hasDT?dts.length+'▴':'▴');
+              btn.classList.toggle('expanded',!open);
+              if(!open){const inner=document.getElementById(expId);if(inner&&!inner.dataset.loaded){inner.innerHTML=dtSubRowInner(row.flFullCode);inner.dataset.loaded='1';}}
+            });
+          }
+        });
+        table.appendChild(tbody);
+        flBody.appendChild(table);
+        feederDiv.appendChild(flBody);
+        feederHdr.addEventListener('click',()=>{
+          const icon=feederHdr.querySelector('.nv-toggle-icon');
+          const open=flBody.style.display!=='none';
+          flBody.style.display=open?'none':'block';
+          if(icon)icon.style.transform=open?'rotate(0deg)':'rotate(90deg)';
+        });
+        gridBody.appendChild(feederDiv);
+      });
+    });
+    gridHdr.addEventListener('click',()=>{
+      const icon=gridHdr.querySelector('.nv-toggle-icon');
+      const open=gridBody.style.display!=='none';
+      gridBody.style.display=open?'none':'block';
+      if(icon)icon.style.transform=open?'rotate(0deg)':'rotate(90deg)';
+    });
+    gridDiv.appendChild(gridBody);
+    container.appendChild(gridDiv);
+  });
+  document.getElementById('recordCount').textContent=`${count} records`;
 }
 
+function dtSubRowInner(flfc){
+  const dts=getDTs(flfc),cons=getConsumers(flfc),dtLoad=getDTLoading(flfc);
+  const loadMap={};dtLoad.forEach(l=>{loadMap[l.dt]=l;});
+  let dtHTML='<div class="no-dt">No DT records.</div>';
+  if(dts.length){
+    const totalR=dts.reduce((s,d)=>s+d.rating,0);
+    const ov=dtLoad.filter(l=>l.pct>=100).length,hi=dtLoad.filter(l=>l.pct>=80&&l.pct<100).length;
+    const alerts=(ov?`<span style="color:#b91c1c;font-weight:700;">⚠ ${ov} overloaded</span> `:'')+(hi?`<span style="color:#d97706;">▲ ${hi} high</span>`:'');
+    const rows=dts.map((d,i)=>{
+      const ld=loadMap[d.serial];
+      return`<tr><td style="text-align:center;">${i+1}</td><td style="font-size:0.57rem;color:var(--ink-light);">${d.serial}</td>
+        <td style="text-align:right;">${d.rating.toLocaleString()}</td><td style="text-align:right;color:var(--warn);font-weight:600;">${d.htAmps}</td>
+        ${ld?`<td style="text-align:right;">${ld.pkva}</td><td>${loadingBadge(ld.pct,ld.range)}</td><td style="font-size:0.55rem;color:var(--ink-light);">${ld.month}</td>`:'<td colspan="3" style="color:var(--ink-light);">—</td>'}</tr>`;
+    }).join('');
+    dtHTML=`${alerts?`<div style="padding:2px 4px;font-size:0.6rem;">${alerts}</div>`:''}
+      <table class="dt-tbl"><thead><tr><th>#</th><th>Serial</th><th style="text-align:right;">kVA</th><th style="text-align:right;">HT(A)</th><th style="text-align:right;">Peak kVA</th><th>Loading</th><th>Month</th></tr></thead>
+      <tbody>${rows}<tr class="dt-sum-row"><td colspan="2">Total</td><td style="text-align:right;">${totalR.toLocaleString()} kVA</td><td colspan="4"></td></tr></tbody></table>`;
+  }
+  let consHTML='<div class="no-dt">No consumer mapping for this FL.</div>';
+  if(cons.length){
+    const shown=cons.slice(0,25);
+    const rows=shown.map((c,i)=>`<tr><td style="text-align:center;">${i+1}</td>
+      <td>${mapsLink(c.ca,c.latlong)}</td><td>${mapsLink(c.meter,c.latlong)}</td>
+      <td style="text-align:left;font-size:0.6rem;">${c.name}</td>
+      <td style="text-align:left;font-size:0.58rem;color:var(--ink-light);">${c.address.substring(0,45)}</td>
+      <td style="font-size:0.58rem;">${c.dtCode}</td></tr>`).join('');
+    consHTML=`<table class="dt-tbl"><thead><tr><th>#</th><th>CA No</th><th>Meter No</th><th style="text-align:left;">Consumer</th><th style="text-align:left;">Address</th><th>DT Code</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+      ${cons.length>25?`<div style="font-size:0.6rem;color:var(--ink-light);padding:3px 6px;">+${cons.length-25} more — use CSV</div>`:''}
+      <div style="font-size:0.6rem;color:var(--wire);font-weight:700;padding:3px 6px;">Total: ${cons.length}</div>`;
+  }
+  return`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.57rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--wire);margin-bottom:3px;">DTs &amp; Peak Loading (Apr–Jun 26)</div>
+    ${dtHTML}
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.57rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--wire);margin:5px 0 3px;">Consumers</div>
+    ${consHTML}`;
+}
+
+let filterData={grid:[],feeder:[],fl:[]};
+
+function populateFilters(data){
+  filterData.grid=[...new Set(data.map(d=>d.grid))].sort().map(g=>({value:g,label:shortGrid(g),sub:''}));
+  filterData.feeder=[...new Set(data.map(d=>d.feeder))].sort().map(f=>({value:f,label:shortFeeder(f),sub:''}));
+
+  const flMap={};
+  data.forEach(d=>{if(!flMap[d.flCode])flMap[d.flCode]=shortFL(d.flName);});
+  filterData.fl=Object.keys(flMap).sort().map(f=>({value:f,label:f,sub:flMap[f]}));
+}
+
+function setupAutocomplete(inputId,listId,dataKey){
+  const input=document.getElementById(inputId);
+  const list=document.getElementById(listId);
+  let activeIdx=-1;
+
+  function renderList(){
+    const q=input.value.trim().toLowerCase();
+    const items=filterData[dataKey].filter(it=>
+      !q || it.label.toLowerCase().includes(q) || it.value.toLowerCase().includes(q) || (it.sub&&it.sub.toLowerCase().includes(q))
+    ).slice(0,50);
+    if(!items.length){list.classList.remove('open');return;}
+    list.innerHTML=items.map((it,i)=>`<div class="ac-item" data-value="${it.value.replace(/"/g,'&quot;')}" data-idx="${i}">${it.label}${it.sub?`<small>${it.sub}</small>`:''}</div>`).join('');
+    list.classList.add('open');
+    activeIdx=-1;
+  }
+
+  input.addEventListener('focus',renderList);
+  input.addEventListener('input',()=>{renderList();refresh();});
+  input.addEventListener('keydown',e=>{
+    const items=list.querySelectorAll('.ac-item');
+    if(e.key==='ArrowDown'){e.preventDefault();activeIdx=Math.min(activeIdx+1,items.length-1);}
+    else if(e.key==='ArrowUp'){e.preventDefault();activeIdx=Math.max(activeIdx-1,0);}
+    else if(e.key==='Enter'){e.preventDefault();if(activeIdx>=0&&items[activeIdx]){input.value=items[activeIdx].dataset.value;list.classList.remove('open');refresh();}return;}
+    else if(e.key==='Escape'){list.classList.remove('open');return;}
+    else return;
+    items.forEach((it,i)=>it.classList.toggle('active',i===activeIdx));
+    if(items[activeIdx])items[activeIdx].scrollIntoView({block:'nearest'});
+  });
+  list.addEventListener('mousedown',e=>{
+    const item=e.target.closest('.ac-item');
+    if(!item)return;
+    e.preventDefault();
+    input.value=item.dataset.value;
+    list.classList.remove('open');
+    refresh();
+  });
+  document.addEventListener('click',e=>{
+    if(!input.contains(e.target)&&!list.contains(e.target))list.classList.remove('open');
+  });
+}
+setupAutocomplete('gridFilter','gridFilterList','grid');
+setupAutocomplete('feederFilter','feederFilterList','feeder');
+setupAutocomplete('flFilter','flFilterList','fl');
+
 function getFiltered(){
-  const gv=document.getElementById('gridFilter').value;
-  const fv=document.getElementById('feederFilter').value;
-  const flv=document.getElementById('flFilter').value;
-  return activeData.filter(d=>(!gv||d.grid===gv)&&(!fv||d.feeder===fv)&&(!flv||d.flName===flv));
+  const gv=(document.getElementById('gridFilter').value||'').trim().toLowerCase();
+  const fv=(document.getElementById('feederFilter').value||'').trim().toLowerCase();
+  const flv=(document.getElementById('flFilter').value||'').trim().toLowerCase();
+  return activeData.filter(d=>
+    (!gv||shortGrid(d.grid).toLowerCase().includes(gv)||d.grid.toLowerCase().includes(gv))&&
+    (!fv||shortFeeder(d.feeder).toLowerCase().includes(fv)||d.feeder.toLowerCase().includes(fv))&&
+    (!flv||d.flCode.toLowerCase().includes(flv)||shortFL(d.flName).toLowerCase().includes(flv))
+  );
 }
 
 function refresh(){
   const r=getFiltered();
-  renderSummary(r);renderTable(r);renderKPI(r);renderAlerts(r);renderFeederChart(r);
-}
-
-/* ══ LOAD DATA ══ */
-function loadData(data,label,uploaded){
-  activeData=data;isUploaded=uploaded;
-  populateFilters(data);refresh();
+  renderSummary(r);
+  renderTable(r);
+  renderKPI(r);
+  renderAlerts(r);
+  renderFeederChart(r);
   buildConsumerFlatList();
-  const tag=document.getElementById('dataSourceTag');
-  tag.textContent=uploaded?'UPLOADED':'BUILT-IN';
-  tag.className='source-tag '+(uploaded?'src-uploaded':'src-default');
-  document.getElementById('fileNameTag').textContent=label;
-  document.getElementById('resetBtn').style.display=uploaded?'inline-block':'none';
+  document.getElementById('recordCount').textContent=`${r.length} records`;
 }
-
-/* ══ CONSUMER SEARCH TAB ══ */
-let consumerFlatList=[];
-function buildConsumerFlatList(){
-  const list=[];
-  activeData.forEach(row=>{
-    getConsumers(row.flFullCode).forEach(c=>{
-      list.push({ca:c.ca,meter:c.meter,name:c.name,address:c.address,dtCode:c.dtCode,pole:c.pole,latlong:c.latlong,
-        flFullCode:row.flFullCode,flCode:row.flCode,flName:row.flName,feeder:row.feeder,grid:row.grid});
-    });
-  });
-  consumerFlatList=list;
-  document.getElementById('consTotalTag').textContent=`${list.length.toLocaleString()} consumer records mapped`;
-  const grids=[...new Set(list.map(c=>c.grid))];
-  document.getElementById('consGridFilter').innerHTML='<option value="">All Grids</option>'+grids.map(g=>`<option value="${g}">${shortGrid(g)}</option>`).join('');
-  renderConsumerSearch();
-}
-
-function renderConsumerSearch(){
-  const q=(document.getElementById('consSearchInput').value||'').trim().toLowerCase();
-  const gv=document.getElementById('consGridFilter').value;
-  let results=consumerFlatList;
-  if(gv)results=results.filter(c=>c.grid===gv);
-  if(q){
-    const terms=q.split(/\s+/).filter(Boolean);
-    results=results.filter(c=>{
-      const hay=`${c.ca} ${c.meter} ${c.name} ${c.address} ${c.dtCode} ${c.pole} ${c.flCode} ${c.flFullCode} ${c.flName} ${c.feeder} ${c.grid}`.toLowerCase();
-      return terms.every(t=>hay.includes(t));
-    });
-  }
-  const body=document.getElementById('consSearchBody');
-  const hint=document.getElementById('consSearchHint');
-  if(!q&&!gv){
-    body.innerHTML='';
-    if(consMapMode&&markerLayer)markerLayer.clearLayers();
-    hint.textContent=`${consumerFlatList.length.toLocaleString()} total consumer records loaded. Type a name, CA number, meter number, address, DT code, or FL/feeder name to search.`;
-    return;
-  }
-  if(consMapMode){
-    renderMapMarkers(results);
-    hint.textContent=results.length>0
-      ? `${results.length.toLocaleString()} match${results.length===1?'':'es'} — map shows consumers with GPS coordinates.`
-      : 'No matches found.';
-    return;
-  }
-  const shown=results.slice(0,200);
-  body.innerHTML=shown.map((c,i)=>`<tr>
-    <td style="text-align:center;">${i+1}</td>
-    <td>${mapsLink(c.ca,c.latlong)}</td>
-    <td>${mapsLink(c.meter,c.latlong)}</td>
-    <td style="text-align:left;">${c.name}</td>
-    <td style="text-align:left;color:var(--ink-light);">${c.address}</td>
-    <td>${shortGrid(c.grid)}</td>
-    <td style="text-align:left;">${shortFeeder(c.feeder).substring(0,28)}</td>
-    <td>${c.flCode}</td>
-    <td style="text-align:left;">${shortFL(c.flName).substring(0,30)}</td>
-    <td>${c.dtCode}</td>
-    <td>${c.pole}</td>
-  </tr>`).join('');
-  hint.textContent=results.length>200
-    ? `Showing first 200 of ${results.length.toLocaleString()} matches — narrow your search for the full list.`
-    : `${results.length.toLocaleString()} match${results.length===1?'':'es'} found.`;
-}
-
-document.getElementById('consSearchInput').addEventListener('input',()=>{
-  autoPoleMapTrigger();
-  renderConsumerSearch();
-});
-document.getElementById('consGridFilter').addEventListener('change',renderConsumerSearch);
-document.getElementById('consClearBtn').addEventListener('click',()=>{
-  document.getElementById('consSearchInput').value='';
-  document.getElementById('consGridFilter').value='';
-  renderConsumerSearch();
-});
-document.getElementById('consExportBtn').addEventListener('click',()=>{
-  const q=(document.getElementById('consSearchInput').value||'').trim().toLowerCase();
-  const gv=document.getElementById('consGridFilter').value;
-  let results=consumerFlatList;
-  if(gv)results=results.filter(c=>c.grid===gv);
-  if(q){
-    const terms=q.split(/\s+/).filter(Boolean);
-    results=results.filter(c=>{
-      const hay=`${c.ca} ${c.meter} ${c.name} ${c.address} ${c.dtCode} ${c.pole} ${c.flCode} ${c.flFullCode} ${c.flName} ${c.feeder} ${c.grid}`.toLowerCase();
-      return terms.every(t=>hay.includes(t));
-    });
-  }
-  if(!results.length){alert('No results to export.');return;}
-  const hdr=['CA No','Meter No','Consumer Name','Address','Grid','Feeder','FL Code','FL Full Code','FL Name','DT Code','Pole No','Lat/Long','Maps Link'];
-  const esc=s=>{const x=String(s||'');return(x.includes(',')||x.includes('"'))?`"${x.replace(/"/g,'""')}"`:x;};
-  const csv=[hdr.join(','),...results.map(c=>[c.ca,c.meter,c.name,c.address,c.grid,c.feeder,c.flCode,c.flFullCode,c.flName,c.dtCode,c.pole,c.latlong,mapsUrl(c.latlong)].map(esc).join(','))].join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download=`ConsumerSearch_${new Date().toISOString().split('T')[0]}.csv`;
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
-});
-
-/* ══ MAP VIEW ══ */
-let leafletMap=null;
-let markerLayer=null;
-let consMapMode=false; // false=table, true=map
-
-const POLE_PATTERN=/\b(pole|pillar|pil|pl|fp|lp|sp|dp|tp|kp|np|op|gp|rp|vp|ep|ks|ht|lt)\w*\d+/i;
-function isPoleQuery(q){return POLE_PATTERN.test(q);}
-
-function autoPoleMapTrigger(){
-  const q=(document.getElementById('consSearchInput').value||'').trim();
-  if(isPoleQuery(q)&&!consMapMode){
-    setMapMode(true);
-  }
-}
-
-function setMapMode(on){
-  consMapMode=on;
-  document.getElementById('consTablePanel').style.display=on?'none':'block';
-  document.getElementById('consMapPanel').style.display=on?'block':'none';
-  document.getElementById('consViewToggle').textContent=on?'☰ Table':'🗺 Map';
-  if(on){
-    if(!leafletMap){initLeaflet();}
-    else{setTimeout(()=>leafletMap.invalidateSize(),100);}
-    renderConsumerSearch(); // repaint markers
-  }
-}
-
-function initLeaflet(){
-  leafletMap=L.map('consMap',{zoomControl:true}).setView([28.56,77.19],14);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    maxZoom:20,
-    attribution:'© <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>'
-  }).addTo(leafletMap);
-  markerLayer=L.layerGroup().addTo(leafletMap);
-}
-
-function renderMapMarkers(results){
-  if(!leafletMap)return;
-  markerLayer.clearLayers();
-  const mapped=results.filter(c=>mapsUrl(c.latlong));
-  const bounds=[];
-  mapped.forEach((c,i)=>{
-    const m=String(c.latlong).match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);
-    if(!m)return;
-    const lat=parseFloat(m[1]),lng=parseFloat(m[2]);
-    if(isNaN(lat)||isNaN(lng))return;
-    bounds.push([lat,lng]);
-    const marker=L.circleMarker([lat,lng],{
-      radius:7,fillColor:'#2563eb',color:'#1d4ed8',weight:2,opacity:1,fillOpacity:0.85
-    });
-    marker.bindPopup(`
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;min-width:220px;">
-        <div style="font-weight:700;font-size:0.78rem;margin-bottom:4px;">${c.name}</div>
-        <div><b>CA No:</b> ${c.ca}</div>
-        <div><b>Meter:</b> ${c.meter}</div>
-        <div><b>Pole:</b> ${c.pole}</div>
-        <div><b>DT:</b> ${c.dtCode}</div>
-        <div><b>FL:</b> ${c.flCode} — ${c.flName}</div>
-        <div><b>Feeder:</b> ${shortFeeder(c.feeder)}</div>
-        <div style="margin-top:4px;color:#5a6580;">${c.address}</div>
-        <div style="margin-top:5px;"><a href="${mapsUrl(c.latlong)}" target="_blank" style="color:#2563eb;">📍 Open in Google Maps</a></div>
-      </div>`,{maxWidth:280}
-    );
-    markerLayer.addLayer(marker);
-  });
-  if(bounds.length===1){leafletMap.setView(bounds[0],18);}
-  else if(bounds.length>1){leafletMap.fitBounds(L.latLngBounds(bounds),{padding:[30,30],maxZoom:18});}
-  document.getElementById('consMapCount').textContent=
-    `${mapped.length} of ${results.length} results have GPS · ${results.length-mapped.length} without GPS`;
-}
-
-document.getElementById('consViewToggle').addEventListener('click',()=>setMapMode(!consMapMode));
 
 /* ══ TAB SWITCHING ══ */
 document.getElementById('tabTopology').addEventListener('click',()=>switchTab('topology'));
 document.getElementById('tabConsumers').addEventListener('click',()=>switchTab('consumers'));
+document.getElementById('tabGIS').addEventListener('click',()=>switchTab('gis'));
 function switchTab(name){
   document.getElementById('tabTopology').classList.toggle('active',name==='topology');
   document.getElementById('tabConsumers').classList.toggle('active',name==='consumers');
+  document.getElementById('tabGIS').classList.toggle('active',name==='gis');
   document.getElementById('view-topology').classList.toggle('hidden',name!=='topology');
   document.getElementById('view-consumers').classList.toggle('hidden',name!=='consumers');
+  document.getElementById('view-gis').classList.toggle('hidden',name!=='gis');
+  if(name==='gis')setTimeout(initGisMap,100);
 }
 
 /* ══ DARK MODE ══ */
@@ -11787,6 +12240,35 @@ function buildDtLookupFromRows(rows){
   });
   return lk;
 }
+
+/* ══ ASSET LOOKUP ══ */
+let assetLookup={};
+const ASSET_TYPE_LABEL={'E11MTC':'Metering Cubicle','E11RMU':'RMU/Switchgear','EDTRN':'Transformer','EDCPU':'Pkg Substation','ECAPA':'Capacitor Panel','ELTSW':'LT Switchgear'};
+const ASSET_TYPE_COLOR={'E11MTC':'#7c3aed','E11RMU':'#2563eb','EDTRN':'#d97706','EDCPU':'#16a34a','ECAPA':'#0891b2','ELTSW':'#6b7280'};
+function buildAssetLookup(raw){
+  const lk={};
+  raw.trim().split('\n').forEach(line=>{
+    const v=line.split('\t');if(v.length<5)return;
+    const fc=v[1].trim();if(!fc)return;
+    if(!lk[fc])lk[fc]=[];
+    lk[fc].push({type:v[0].trim(),serial:v[2].trim(),desc:v[3].trim(),mfr:v[4].trim()});
+  });
+  return lk;
+}
+function getAssets(fc){return assetLookup[fc]||[];}
+
+/* flat list for asset search tab */
+let assetFlatList=[];
+function buildAssetFlatList(){
+  const list=[];
+  activeData.forEach(row=>{
+    getAssets(row.flFullCode).forEach(a=>{
+      list.push({...a,flFullCode:row.flFullCode,flCode:row.flCode,flName:row.flName,feeder:row.feeder,grid:row.grid});
+    });
+  });
+  assetFlatList=list;
+}
+
 function buildConsumerLookupFromRows(rows){
   const lk={};
   rows.forEach(r=>{
@@ -11797,11 +12279,182 @@ function buildConsumerLookupFromRows(rows){
   return lk;
 }
 
-const tblWrap=document.getElementById('tblWrap'),slider=document.getElementById('tblSlider'),sliderPct=document.getElementById('sliderPct');
-function updateSliderGradient(val){slider.style.background=`linear-gradient(to right,var(--wire-bright) ${val}%,var(--paper-darker) ${val}%)`;sliderPct.textContent=Math.round(val)+'%';}
-slider.addEventListener('input',()=>{tblWrap.scrollLeft=(slider.value/100)*(tblWrap.scrollWidth-tblWrap.clientWidth);updateSliderGradient(slider.value);});
-tblWrap.addEventListener('scroll',()=>{const mx=tblWrap.scrollWidth-tblWrap.clientWidth;if(mx<=0)return;const p=(tblWrap.scrollLeft/mx)*100;slider.value=p;updateSliderGradient(p);});
-updateSliderGradient(0);
+
+
+/* ══ CONSUMER SEARCH MAP VIEW ══ */
+let consLeafletMap=null,consMarkerLayer=null,consMapMode=false;
+const POLE_PATTERN=/\b(pole|pillar|pil|pl|fp|lp|sp|dp|tp|kp|np|op|gp|rp|vp|ep|ks|ht|lt)\w*\d+/i;
+function isPoleQuery(q){return POLE_PATTERN.test(q);}
+function autoPoleMapTrigger(){
+  const q=(document.getElementById('consSearchInput').value||'').trim();
+  if(isPoleQuery(q)&&!consMapMode)setConsMapMode(true);
+}
+function setConsMapMode(on){
+  consMapMode=on;
+  const tablePanel=document.getElementById('consTablePanel');
+  const mapPanel=document.getElementById('consMapPanel');
+  const btn=document.getElementById('consViewToggle');
+  if(tablePanel)tablePanel.style.display=on?'none':'block';
+  if(mapPanel)mapPanel.style.display=on?'block':'none';
+  if(btn)btn.textContent=on?'☰ Table':'🗺 Map';
+  if(on){
+    if(!consLeafletMap)initConsLeaflet();
+    else setTimeout(()=>consLeafletMap.invalidateSize(),100);
+    renderConsumerSearch();
+  }
+}
+function initConsLeaflet(){
+  consLeafletMap=L.map('consMap',{zoomControl:true}).setView([28.56,77.19],14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:20,attribution:'© OpenStreetMap'}).addTo(consLeafletMap);
+  consMarkerLayer=L.layerGroup().addTo(consLeafletMap);
+}
+function renderMapMarkers(results){
+  if(!consLeafletMap)return;
+  consMarkerLayer.clearLayers();
+  const mapped=results.filter(c=>mapsUrl(c.latlong));
+  const bounds=[];
+  mapped.forEach(c=>{
+    const m=String(c.latlong).match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);
+    if(!m)return;
+    const lat=parseFloat(m[1]),lng=parseFloat(m[2]);
+    if(isNaN(lat)||isNaN(lng))return;
+    bounds.push([lat,lng]);
+    L.circleMarker([lat,lng],{radius:7,fillColor:'#2563eb',color:'#1d4ed8',weight:2,opacity:1,fillOpacity:0.85})
+     .bindPopup(`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;min-width:220px;">
+       <div style="font-weight:700;font-size:0.78rem;margin-bottom:4px;">${c.name}</div>
+       <div><b>CA No:</b> ${c.ca}</div><div><b>Meter:</b> ${c.meter}</div><div><b>Pole:</b> ${c.pole}</div>
+       <div><b>DT:</b> ${c.dtCode}</div><div><b>FL:</b> ${c.flCode} — ${c.flName}</div>
+       <div><b>Feeder:</b> ${shortFeeder(c.feeder)}</div>
+       <div style="margin-top:4px;color:#5a6580;">${c.address}</div>
+       <div style="margin-top:5px;"><a href="${mapsUrl(c.latlong)}" target="_blank" style="color:#2563eb;">📍 Open in Google Maps</a></div>
+     </div>`,{maxWidth:280}).addTo(consMarkerLayer);
+  });
+  if(bounds.length===1)consLeafletMap.setView(bounds[0],18);
+  else if(bounds.length>1)consLeafletMap.fitBounds(L.latLngBounds(bounds),{padding:[30,30],maxZoom:18});
+  const cnt=document.getElementById('consMapCount');
+  if(cnt)cnt.textContent=`${mapped.length} of ${results.length} results have GPS · ${results.length-mapped.length} without GPS`;
+}
+if(document.getElementById('consViewToggle')){
+  document.getElementById('consViewToggle').addEventListener('click',()=>setConsMapMode(!consMapMode));
+}
+
+function loadData(data,label,uploaded){
+  activeData=data;isUploaded=uploaded;
+  populateFilters(data);refresh();
+  buildConsumerFlatList();
+  const tag=document.getElementById('dataSourceTag');
+  tag.textContent=uploaded?'UPLOADED':'BUILT-IN';
+  tag.className='source-tag '+(uploaded?'src-uploaded':'src-default');
+  document.getElementById('fileNameTag').textContent=label;
+  document.getElementById('resetBtn').style.display=uploaded?'inline-block':'none';
+}
+
+/* ══ CONSUMER SEARCH TAB ══ */
+let consumerFlatList=[];
+function buildConsumerFlatList(){
+  const list=[];
+  activeData.forEach(row=>{
+    getConsumers(row.flFullCode).forEach(c=>{
+      list.push({ca:c.ca,meter:c.meter,name:c.name,address:c.address,dtCode:c.dtCode,pole:c.pole,latlong:c.latlong,
+        flFullCode:row.flFullCode,flCode:row.flCode,flName:row.flName,feeder:row.feeder,grid:row.grid});
+    });
+  });
+  consumerFlatList=list;
+  const totalTag=document.getElementById('consTotalTag');
+  if(totalTag)totalTag.textContent=`${list.length.toLocaleString()} consumer records mapped`;
+  const grids=[...new Set(list.map(c=>c.grid))];
+  const gridSel=document.getElementById('consGridFilter');
+  if(gridSel)gridSel.innerHTML='<option value="">All Grids</option>'+grids.map(g=>`<option value="${g}">${shortGrid(g)}</option>`).join('');
+  renderConsumerSearch();
+}
+
+function renderConsumerSearch(){
+  const inputEl=document.getElementById('consSearchInput');
+  const gridEl=document.getElementById('consGridFilter');
+  if(!inputEl||!gridEl)return;
+  const q=(inputEl.value||'').trim().toLowerCase();
+  const gv=gridEl.value;
+  let results=consumerFlatList;
+  if(gv)results=results.filter(c=>c.grid===gv);
+  if(q){
+    const terms=q.split(/\s+/).filter(Boolean);
+    results=results.filter(c=>{
+      const hay=`${c.ca} ${c.meter} ${c.name} ${c.address} ${c.dtCode} ${c.pole} ${c.flCode} ${c.flFullCode} ${c.flName} ${c.feeder} ${c.grid}`.toLowerCase();
+      return terms.every(t=>hay.includes(t));
+    });
+  }
+  const body=document.getElementById('consSearchBody');
+  const hint=document.getElementById('consSearchHint');
+  if(!body||!hint)return;
+  if(!q&&!gv){
+    body.innerHTML='';
+    if(typeof consMapMode!=='undefined'&&consMapMode&&typeof consMarkerLayer!=='undefined'&&consMarkerLayer)consMarkerLayer.clearLayers();
+    hint.textContent=`${consumerFlatList.length.toLocaleString()} total consumer records loaded. Type a name, CA number, meter number, address, DT code, or FL/feeder name to search.`;
+    return;
+  }
+  if(typeof consMapMode!=='undefined'&&consMapMode){
+    if(typeof renderMapMarkers==='function')renderMapMarkers(results);
+    hint.textContent=results.length>0
+      ? `${results.length.toLocaleString()} match${results.length===1?'':'es'} — map shows consumers with GPS coordinates.`
+      : 'No matches found.';
+    return;
+  }
+  const shown=results.slice(0,200);
+  body.innerHTML=shown.map((c,i)=>`<tr>
+    <td style="text-align:center;">${i+1}</td>
+    <td>${mapsLink(c.ca,c.latlong)}</td>
+    <td>${mapsLink(c.meter,c.latlong)}</td>
+    <td style="text-align:left;">${c.name}</td>
+    <td style="text-align:left;color:var(--ink-light);">${c.address}</td>
+    <td>${shortGrid(c.grid)}</td>
+    <td style="text-align:left;">${shortFeeder(c.feeder).substring(0,28)}</td>
+    <td>${c.flCode}</td>
+    <td style="text-align:left;">${shortFL(c.flName).substring(0,30)}</td>
+    <td>${c.dtCode}</td>
+    <td>${c.pole}</td>
+  </tr>`).join('');
+  hint.textContent=results.length>200
+    ? `Showing first 200 of ${results.length.toLocaleString()} matches — narrow your search for the full list.`
+    : `${results.length.toLocaleString()} match${results.length===1?'':'es'} found.`;
+}
+
+if(document.getElementById('consSearchInput')){
+  document.getElementById('consSearchInput').addEventListener('input',()=>{
+    if(typeof autoPoleMapTrigger==='function')autoPoleMapTrigger();
+    renderConsumerSearch();
+  });
+}
+if(document.getElementById('consGridFilter'))document.getElementById('consGridFilter').addEventListener('change',renderConsumerSearch);
+if(document.getElementById('consClearBtn')){
+  document.getElementById('consClearBtn').addEventListener('click',()=>{
+    document.getElementById('consSearchInput').value='';
+    document.getElementById('consGridFilter').value='';
+    renderConsumerSearch();
+  });
+}
+if(document.getElementById('consExportBtn')){
+  document.getElementById('consExportBtn').addEventListener('click',()=>{
+    const q=(document.getElementById('consSearchInput').value||'').trim().toLowerCase();
+    const gv=document.getElementById('consGridFilter').value;
+    let results=consumerFlatList;
+    if(gv)results=results.filter(c=>c.grid===gv);
+    if(q){
+      const terms=q.split(/\s+/).filter(Boolean);
+      results=results.filter(c=>{
+        const hay=`${c.ca} ${c.meter} ${c.name} ${c.address} ${c.dtCode} ${c.pole} ${c.flCode} ${c.flFullCode} ${c.flName} ${c.feeder} ${c.grid}`.toLowerCase();
+        return terms.every(t=>hay.includes(t));
+      });
+    }
+    if(!results.length){alert('No results to export.');return;}
+    const hdr=['CA No','Meter No','Consumer Name','Address','Grid','Feeder','FL Code','FL Full Code','FL Name','DT Code','Pole No','Lat/Long','Maps Link'];
+    const esc=s=>{const x=String(s||'');return(x.includes(',')||x.includes('"'))?`"${x.replace(/"/g,'""')}"`:x;};
+    const csv=[hdr.join(','),...results.map(c=>[c.ca,c.meter,c.name,c.address,c.grid,c.feeder,c.flCode,c.flFullCode,c.flName,c.dtCode,c.pole,c.latlong,mapsUrl(c.latlong)].map(esc).join(','))].join('\n');
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+    a.download=`ConsumerSearch_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+  });
+}
 
 /* ══ EVENTS ══ */
 document.getElementById('resetBtn').addEventListener('click',()=>{
@@ -11819,23 +12472,25 @@ document.getElementById('resetBtn').addEventListener('click',()=>{
   loadData(parseBuiltin(BUILTIN_TSV),'Built-in dataset',false);
   showStatus('Reset to built-in','ok');
 });
-document.getElementById('gridFilter').addEventListener('change',refresh);
-document.getElementById('feederFilter').addEventListener('change',refresh);
-document.getElementById('flFilter').addEventListener('change',refresh);
+/* gridFilter/feederFilter/flFilter input handling now done in setupAutocomplete() */
 document.getElementById('exportCsvBtn').addEventListener('click',exportCSV);
 document.getElementById('clearFilters').addEventListener('click',()=>{
-  document.getElementById('gridFilter').value='';document.getElementById('feederFilter').value='';document.getElementById('flFilter').value='';refresh();
+  document.getElementById('gridFilter').value='';
+  document.getElementById('feederFilter').value='';
+  document.getElementById('flFilter').value='';
+  refresh();
 });
 document.querySelector('#summaryTable tbody').addEventListener('click',e=>{
   const row=e.target.closest('.sum-row');if(!row)return;
   const g=row.dataset.grid;const gs=document.getElementById('gridFilter');
   gs.value=gs.value===g?'':g;refresh();
-  document.getElementById('tblWrap').scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('networkView').scrollIntoView({behavior:'smooth',block:'nearest'});
 });
 
 /* INIT */
 dtLookup=buildDtLookup(BUILTIN_DT_RAW);
 consumerLookup=buildConsumerLookup(CONSUMER_TSV);
+assetLookup=buildAssetLookup(ASSET_TSV);
 loadData(parseBuiltin(BUILTIN_TSV),'Built-in dataset',false);
 </script>
 </body>
